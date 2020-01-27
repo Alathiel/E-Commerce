@@ -10,8 +10,8 @@ import NavigationService from '../../utils/NavigationService';
 // import BackgroundTimer from 'react-native-background-timer';
 // import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 
-var list = [];
 const db = SQLite.openDatabase('test.db', '1.0', '', 1);
+var x = true;
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -25,23 +25,30 @@ export default class Login extends React.Component {
     login(){
         let username = this.state.username;
         let password = this.state.password;
-        let x = 0;
-        db.transaction(function (txn) {
-            txn.executeSql('SELECT * FROM `Users`', [], function (tx, res) {
-                var len = res.rows.length;
-                for (let i = 0; i < len; i++) {
-                    let row = res.rows.item(i);
-                    alert(row.username+'      '+row.password);
-                    alert(username+'         '+password)
-                    if (row.username === username && row.password === password)
-                    {
-                        x = 1;
+        var i=0;
+        if (username != '' && password != ''){
+            db.transaction(function (txn) {
+                txn.executeSql('SELECT * FROM `Users`', [], function (tx, res) {
+                    var len = res.rows.length;
+                    for (; i < len; i++) {
+                        let row = res.rows.item(i);
+                        if (username == row.username && password == row.password)
+                        {
+                            NavigationService.navigate('UserHome');
+                            break;
+                        }
                     }
-                }
+                    if (i == len){
+                        alert('Login Fallito');
+                    }
+                });
             });
-        });
-        if (x === 1){
-            NavigationService.navigate('HomeApp');
+            if (x == false){
+                alert('Login Fallito');
+            }
+        }
+        else {
+            alert('Compila tutti i campi');
         }
     }
 

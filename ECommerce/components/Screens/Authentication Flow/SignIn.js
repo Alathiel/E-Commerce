@@ -9,8 +9,8 @@ import SQLite from 'react-native-sqlite-2';
 // import BackgroundTimer from 'react-native-background-timer';
 // import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 
-var list = [];
 const db = SQLite.openDatabase('test.db', '1.0', '', 1);
+var x = true;
 
 export default class SignIn extends React.Component {
     constructor(props) {
@@ -19,6 +19,40 @@ export default class SignIn extends React.Component {
             username: '',
             password: '',
         };
+    }
+
+    signIn(){
+        let username = this.state.username;
+        let password = this.state.password;
+        var i = 0;
+        if (username!='' && password!=''){
+            db.transaction(function (txn) {
+                txn.executeSql('SELECT * FROM `Users`', [], function (tx, res) {
+                    var len = res.rows.length;
+                    for (; i < len; i++) {
+                        let row = res.rows.item(i);
+                        if (username == row.username)
+                        {
+                            break;
+                        }
+                    }
+                    if (i == len)
+                    {
+                        db.transaction(function (txn) {
+                            txn.executeSql('Insert INTO `Users` (username,password) VALUES ("'+username+'","'+password+'")',[]);
+                        });
+                        alert("Utente aggiunto con successo");
+                        this.setState({username:'', password:''});
+                    }
+                    else {
+                        alert('Username già in uso, prova con un altro');
+                    }
+                });
+            });
+        }
+        else {
+            alert('Compila tutti i campi');
+        }
     }
 
     render() {
@@ -30,7 +64,7 @@ export default class SignIn extends React.Component {
                 <Input label='Password' placeholder='Hi, Write Here!!' style={{paddingBottom:20,paddingTop:20}} secureTextEntry={true}
                 onChangeText={(password) => this.setState({password})} value={this.state.password}/>
                 </View>
-                <Button title='Sign In' type='solid' style={{paddingTop:15}} onPress={() => this.props.navigation.navigate('Login')}/>
+                <Button title='Sign In' type='solid' style={{paddingTop:15}} onPress={() => this.signIn()}/>
             </View>
         );
     }

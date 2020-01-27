@@ -9,7 +9,7 @@ import { createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import NavigationService from './NavigationService';
 //screens
-import HomeScreen from '../Screens/HomeScreen.js';
+import UserHomeScreen from '../Screens/UserHomeScreen.js';
 import LoginHome from '../Screens/Authentication Flow/LoginHome.js';
 import Login from '../Screens/Authentication Flow/Login.js';
 import SignIn from '../Screens/Authentication Flow/SignIn.js';
@@ -17,11 +17,18 @@ import SignIn from '../Screens/Authentication Flow/SignIn.js';
 //create a sub-stack
 const AppStack = createStackNavigator(
   {
-    HomeApp: HomeScreen,
+    UserHome: UserHomeScreen,
+    // AdminHome: AdminHomeScreen,
   },
   {
-    initialRouteName: 'HomeApp',
-    // headerMode: 'none',
+    initialRouteName: 'UserHome',
+    defaultNavigationOptions: {
+        headerLeft: ()=>(
+            <TouchableWithoutFeedback onPress={() => NavigationService.navigate('UserHomeScreen')} style={{paddingLeft: 20, paddingTop:2}}>
+            <Icon name='home' type='material-icons' color='black'/>
+            </TouchableWithoutFeedback>
+        ),
+    },
   },
 );
 

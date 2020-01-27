@@ -4,7 +4,7 @@
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
 import {ListItem, Icon, Input, Text} from 'react-native-elements';
-// import styles from './SitesScreenStyle.js';
+import styles from './UserHomeScreenStyle.js';
 import SQLite from 'react-native-sqlite-2';
 // import BackgroundTimer from 'react-native-background-timer';
 // import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
@@ -13,7 +13,7 @@ import SQLite from 'react-native-sqlite-2';
 var list = [];
 const db = SQLite.openDatabase('test.db', '1.0', '', 1);
 
-export default class SitesScreen extends React.Component {
+export default class UserHomeScreen extends React.Component {
     constructor(props) {
         super(props);
         // this.state = {
@@ -207,7 +207,7 @@ export default class SitesScreen extends React.Component {
 
     render() {
         return (
-            <View >
+            <View style={styles.MainContainer}>
 
                 {/* <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
                     <ModalContent>
