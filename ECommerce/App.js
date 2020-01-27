@@ -12,7 +12,7 @@ import SQLite from 'react-native-sqlite-2';
         txn.executeSql('CREATE TABLE IF NOT EXISTS Users(id INTEGER PRIMARY KEY AUTOINCREMENT,username VARCHAR(30),password VARCHAR(30), admin INTEGER)',[]);
         txn.executeSql('SELECT * FROM `Users`', [], function (tx, res) {
           var len = res.rows.length;
-          if(len === 0){
+          if (len === 0){
             txn.executeSql('Insert INTO `Users` (username,password,admin) VALUES ("Admin","admin",1)', []);
           }
         });
