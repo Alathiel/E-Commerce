@@ -2,14 +2,13 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
+import {View} from 'react-native';
 import {ListItem, Icon, Input, Text, Button} from 'react-native-elements';
 import styles from './LoginStyle.js';
 import SQLite from 'react-native-sqlite-2';
-// import BackgroundTimer from 'react-native-background-timer';
 // import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 
-const db = SQLite.openDatabase('test.db', '1.0', '', 1);
+const db = SQLite.openDatabase('ECommerce.db', '1.0', '', 1);
 var x = true;
 
 export default class SignIn extends React.Component {
