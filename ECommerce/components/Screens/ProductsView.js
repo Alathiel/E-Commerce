@@ -11,6 +11,7 @@ import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-
 import ImagePicker from 'react-native-image-picker';
 
 var datas = [];
+var userID;
 const db = SQLite.openDatabase('ECommerce.db', '1.0', '', 1);
 
 export default class ProductsView extends React.Component {
@@ -22,8 +23,7 @@ export default class ProductsView extends React.Component {
             userID:'',
             id:'',
             name:'',
-            category: this.props.navigation.getParam('category','default-value'),
-            categoryTitle:'',
+            categoryItem:'',
             isVisible: false,
             edit: false,
             info: false,
@@ -32,6 +32,10 @@ export default class ProductsView extends React.Component {
             source: '',
             icon_name:'',
         };
+    }
+
+    handleBackButton() {
+        datas.splice(0);
     }
 
     imagePick= async() => {
@@ -76,18 +80,17 @@ export default class ProductsView extends React.Component {
         db.transaction(function (txn) {
             txn.executeSql('SELECT * FROM Logged', [], function (tx, res) {
                 let row = res.rows.item(0);
-                this.setState({userID: row.user});
+                userID = row.user;
             });
         });
     }
     //????
     getDatas()
     {
-        // list.splice(0);
+        var categoryItem = this.state.categoryItem;
         db.transaction(function (txn) {
-            txn.executeSql('SELECT * FROM Items where adminId='+this.state.userID+' and category="'+this.state.category+'"', [], function (tx, res) {
+            txn.executeSql('SELECT * FROM Items where adminId='+userID+' and category="'+categoryItem+'"', [], function (tx, res) {
                 var len = res.rows.length;
-                alert(len)
                 for (let i = 0; i < len; i++) {
                     let row = res.rows.item(i);
                     let x = 0;
@@ -110,10 +113,11 @@ export default class ProductsView extends React.Component {
           reload: reload + 1,
         }));
     }
-
     componentDidMount(){
+        this.setState({categoryItem: this.props.navigation.getParam('category','default-value')});
         this.getUserID();
         this.getDatas();
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
 
     check(name){
@@ -131,27 +135,27 @@ export default class ProductsView extends React.Component {
         }
     }
 
-    add(){
-        let name = this.state.name;
-        let category=this.state.category;
-        alert(name+'    '+category);
-        if (this.state.name){
-            let x = this.check(name);
-            if (x === 0){
-                db.transaction(function (txn) {
-                    txn.executeSql('INSERT INTO Items (name,category,adminId) VALUES ("' + name + '","'+category+'",' + this.state.userID + ')',[]);
-                });
-                this.setState({name:'', icon_name:'Pick an Image', add: false});
-                this.getDatas();
-            }
-            else {
-                alert('Element already exists');
-            }
-        }
-        else {
-            alert('Please fill data');
-        }
-    }
+    // add(){
+    //     let name = this.state.name;
+    //     let category=this.state.category;
+    //     alert(name+'    '+category);
+    //     if (this.state.name){
+    //         let x = this.check(name);
+    //         if (x === 0){
+    //             db.transaction(function (txn) {
+    //                 txn.executeSql('INSERT INTO Items (name,category,adminId) VALUES ("' + name + '","'+category+'",' + userID + ')',[]);
+    //             });
+    //             this.setState({name:'', icon_name:'Pick an Image', add: false});
+    //             this.getDatas();
+    //         }
+    //         else {
+    //             alert('Element already exists');
+    //         }
+    //     }
+    //     else {
+    //         alert('Please fill data');
+    //     }
+    // }
 
 
     render() {
@@ -228,15 +232,15 @@ export default class ProductsView extends React.Component {
                     </ModalContent>
                 </Modal>
 
-                <ScrollView key={this.state.reload} locked={true}>
+                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
                 <Button title='refresh' onPress={()=> this.componentDidMount()}></Button>
-                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>{this.state.category}</Text>
+                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>{this.props.navigation.getParam('category','default-value')}</Text>
                     {
                         datas.map((l, i) => (
                         <ListItem
                             key={i}
                             // leftAvatar={{ source: { uri: l.avatar_url } }}
-                            title={l.category}
+                            title={l.name}
                             // subtitle={l.subtitle}
                             bottomDivider
                             // rightIcon={

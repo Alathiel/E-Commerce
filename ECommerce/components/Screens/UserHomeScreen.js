@@ -114,17 +114,13 @@ export default class UserHomeScreen extends React.Component {
                     </ModalContent>
                 </Modal>
 
-                <ScrollView key={this.state.reload} locked={true}>
+                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
                 <Button title='Refresh' onPress={()=> this.getCategories()}></Button>
                     <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
                     {
                         categories.map((l, i) => (
-                        <Card
-                            key={i}
-                            containerStyle={{backgroundColor: 'rgba(52, 52, 52, 0.0)'}}
-                            title={l}>
-
-                            <Button title={l} onPress={() => this.props.navigation.navigate('ProductsView',{category: l})}/>
+                        <Card key={i} containerStyle={{maxWidth:'90%'}} title={l}>
+                            <Button title='See Catalog' style={{backgroundColor: 'rgba(52, 52, 52, 0.0)'}} onPress={() => this.props.navigation.navigate('ProductsView',{category: l})}/>
                         </Card>
                         ))
                     }
