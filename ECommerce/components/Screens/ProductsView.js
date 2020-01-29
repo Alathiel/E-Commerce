@@ -6,7 +6,7 @@ import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native
 import {ListItem, Input, Text, Card, Icon, Button} from 'react-native-elements';
 import styles from './ProductViewStyle.js';
 import SQLite from 'react-native-sqlite-2';
-// import BackgroundTimer from 'react-native-background-timer';
+import BackgroundTimer from 'react-native-background-timer';
 import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 import { NavigationEvents } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
@@ -40,7 +40,24 @@ export default class ProductsView extends React.Component {
         this.props.navigation.addListener('didFocus', () => {});
     }
 
+
+    componentWillMount(){
+        const refreshTimeout = BackgroundTimer.setTimeout(() => {this.getDatas();}, 200);
+    }
+
+    componentDidMount(){
+        this.setState({categoryItem: this.props.navigation.getParam('category','default-value')});
+        this.getUserID();
+        this.getDatas();
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
     handleBackButton() {
+        var add = this.state.add;
+        if(add == true)
+        this.setState({add:false});
+        else
+        return false;
     }
 
     imagePick= async() => {
@@ -110,13 +127,7 @@ export default class ProductsView extends React.Component {
           reload: reload + 1,
         }));
     }
-    componentDidMount(){
-        this.setState({categoryItem: this.props.navigation.getParam('category','default-value')});
-        this.getUserID();
-        this.getDatas();
-        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
 
-    }
 
     onDidFocus()
     {
