@@ -2,12 +2,13 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View,TouchableWithoutFeedback,ScrollView,BackHandler, Button, TouchableWithoutFeedbackBase} from 'react-native';
-import {ListItem, Input, Text, Card, Icon} from 'react-native-elements';
+import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
+import {ListItem, Input, Text, Card, Icon, Button} from 'react-native-elements';
 import styles from './ProductViewStyle.js';
 import SQLite from 'react-native-sqlite-2';
 // import BackgroundTimer from 'react-native-background-timer';
 import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
+import { NavigationEvents } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
 
 var datas = [];
@@ -32,10 +33,14 @@ export default class ProductsView extends React.Component {
             source: '',
             icon_name:'',
         };
+        this.props.navigation.addListener('willFocus', () => {
+            datas.splice(0);
+            this.getDatas();
+        });
+        this.props.navigation.addListener('didFocus', () => {});
     }
 
     handleBackButton() {
-        datas.splice(0);
     }
 
     imagePick= async() => {
@@ -75,7 +80,6 @@ export default class ProductsView extends React.Component {
             }
         });
     }
-    //???
     getUserID(){
         db.transaction(function (txn) {
             txn.executeSql('SELECT * FROM Logged', [], function (tx, res) {
@@ -84,25 +88,18 @@ export default class ProductsView extends React.Component {
             });
         });
     }
-    //????
     getDatas()
     {
         var categoryItem = this.state.categoryItem;
         db.transaction(function (txn) {
             txn.executeSql('SELECT * FROM Items where adminId='+userID+' and category="'+categoryItem+'"', [], function (tx, res) {
                 var len = res.rows.length;
+                var rows = [];
                 for (let i = 0; i < len; i++) {
                     let row = res.rows.item(i);
-                    let x = 0;
-                    for (let y = 0; y < datas.length && x === 0; y++){
-                        if (row.id === datas[y].id){
-                            x = 1;
-                        }
-                    }
-                    if (x === 0){
-                        datas.push({id:row.id,name:row.name,category:row.category,userID:row.adminId});
-                    }
+                    rows [i] = row;
                 }
+                datas = rows.filter(rows => rows.category != datas.category && rows.name!=datas.name);
             });
         });
         this.forceRemount();
@@ -118,12 +115,19 @@ export default class ProductsView extends React.Component {
         this.getUserID();
         this.getDatas();
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+
     }
 
-    check(name){
+    onDidFocus()
+    {
+        this.getDatas();
+        this.getDatas();
+    }
+
+    check(name,category){
         let x = 0;
         datas.forEach(element => {
-            if(element.name == name){
+            if(element.name == name && element.category == category){
                 x = 1;
             }
         });
@@ -135,32 +139,37 @@ export default class ProductsView extends React.Component {
         }
     }
 
-    // add(){
-    //     let name = this.state.name;
-    //     let category=this.state.category;
-    //     alert(name+'    '+category);
-    //     if (this.state.name){
-    //         let x = this.check(name);
-    //         if (x === 0){
-    //             db.transaction(function (txn) {
-    //                 txn.executeSql('INSERT INTO Items (name,category,adminId) VALUES ("' + name + '","'+category+'",' + userID + ')',[]);
-    //             });
-    //             this.setState({name:'', icon_name:'Pick an Image', add: false});
-    //             this.getDatas();
-    //         }
-    //         else {
-    //             alert('Element already exists');
-    //         }
-    //     }
-    //     else {
-    //         alert('Please fill data');
-    //     }
-    // }
+    add(){
+        let name = this.state.name;
+        let category=this.state.categoryItem;
+        if (this.state.name){
+            let x = this.check(name,category);
+            if (x === 0){
+                db.transaction(function (txn) {
+                    txn.executeSql('INSERT INTO Items (name,category,adminId) VALUES ("' + name + '","'+category+'",' + userID + ')',[]);
+                });
+                this.setState({name:'', icon_name:'Pick an Image', add: false});
+                this.getDatas();
+            }
+            else {
+                alert('Element already exists');
+            }
+        }
+        else {
+            alert('Please fill data');
+        }
+    }
 
 
     render() {
         return (
             <View style={styles.MainContainer}>
+            <NavigationEvents
+                onWillFocus={payload => console.log('will focus', payload)}
+                onDidFocus={payload => console.log('did focus', payload)}
+                onWillBlur={payload => console.log('will blur', payload)}
+                onDidBlur={payload => console.log('did blur', payload)}
+                />
             {/* <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
                     <ModalContent>
                         <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false });
@@ -233,7 +242,7 @@ export default class ProductsView extends React.Component {
                 </Modal>
 
                 <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
-                <Button title='refresh' onPress={()=> this.componentDidMount()}></Button>
+                <Button title='refresh' onPress={()=> this.getDatas()}></Button>
                     <Text h4 style={{textAlign:'center',paddingBottom:10}}>{this.props.navigation.getParam('category','default-value')}</Text>
                     {
                         datas.map((l, i) => (

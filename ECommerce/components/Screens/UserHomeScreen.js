@@ -23,10 +23,6 @@ export default class UserHomeScreen extends React.Component {
         };
     }
 
-    componentWillMount(){
-        this.getCategories();
-    }
-
     getCategories()
     {
         db.transaction(function (txn) {
@@ -51,8 +47,8 @@ export default class UserHomeScreen extends React.Component {
 
     componentDidMount(){
         this.getCategories();
-        this.forceRemount();
         this.getUserID();
+        this.forceRemount();
     }
 
     getUserID(){
