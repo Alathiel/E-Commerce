@@ -4,7 +4,6 @@ import React from 'react';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import 'react-native-gesture-handler';
 import {Icon} from 'react-native-elements';
-import SQLite from 'react-native-sqlite-2';
 //navigator
 import { createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
@@ -14,21 +13,35 @@ import UserHomeScreen from '../Screens/UserHomeScreen.js';
 import LoginHome from '../Screens/Authentication Flow/LoginHome.js';
 import Login from '../Screens/Authentication Flow/Login.js';
 import SignIn from '../Screens/Authentication Flow/SignIn.js';
+import ProductsView from '../Screens/ProductsView';
 import LoadingScreen from '../Screens/LoadingScreen.js';
 
 const AppStack = createStackNavigator(
   {
     UserHome: UserHomeScreen,
+    ProductsView: ProductsView,
     // AdminHome: AdminHomeScreen,
   },
   {
     initialRouteName: 'UserHome',
     defaultNavigationOptions: {
         headerLeft: ()=>(
-            <TouchableWithoutFeedback onPress={() => NavigationService.navigate('UserHomeScreen')} style={{paddingLeft: 20, paddingTop:2}}>
+          <TouchableWithoutFeedback onPress={() => NavigationService.navigate('App')} style={{paddingLeft: 20, paddingTop:2}}>
             <Icon name='home' type='material-icons' color='black'/>
-            </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
         ),
+        headerStyle: {
+          backgroundColor: 'rgba(52, 52, 52, 0.0)',
+          shadowColor: 'transparent',
+          borderBottomWidth: 0,
+          shadowOpacity: 0,
+          shadowOffset: {
+            height: 0,
+            width: 0,
+          },
+          shadowRadius: 0,
+          elevation: 0,
+        },
     },
   },
 );

@@ -19,18 +19,15 @@ export default class UserHomeScreen extends React.Component {
               var len = res.rows.length;
               if (len == 0){
                 txn.executeSql('INSERT INTO Logged (login) VALUES (0)',[]);
-                // NavigationService.navigate('LoginFlow');
                 NavigationService.navigate('LoginFlow');
               }
               else {
                 let row = res.rows.item(0);
                 if (row.login == 0)
                 {
-                  // NavigationService.navigate('LoginFlow');
                   NavigationService.navigate('LoginFlow');
                 }
                 else {
-                  // NavigationService.navigate('App');
                   NavigationService.navigate('App');
                 }
               }
