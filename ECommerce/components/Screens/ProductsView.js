@@ -34,7 +34,7 @@ export default class ProductsView extends React.Component {
             source: '',
             icon_name:'',
         };
-        this.props.navigation.addListener('willFocus', () => {
+        this.props.navigation.addListener('willFocus', () => {//category change
             datas.splice(0);
             this.getDatas();
         });

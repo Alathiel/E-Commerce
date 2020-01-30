@@ -25,6 +25,7 @@ export default class UserHomeScreen extends React.Component {
             imagePicker:false,
             icon_name:'Pick Image',
         };
+        //account/screen change
         this.props.navigation.addListener('willFocus', () => {
             categories = categories.filter(categories => categories.adminId == userID);
             this.getCategories();
@@ -59,7 +60,7 @@ export default class UserHomeScreen extends React.Component {
         };
     };
 
-    componentWillMount(){
+    componentWillMount(){ //first load
         this.getUserID();
         const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
     }
