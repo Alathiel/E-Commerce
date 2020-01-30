@@ -53,11 +53,6 @@ export default class ProductsView extends React.Component {
     }
 
     handleBackButton() {
-        var add = this.state.add;
-        if(add == true)
-        this.setState({add:false});
-        else
-        return false;
     }
 
     imagePick= async() => {

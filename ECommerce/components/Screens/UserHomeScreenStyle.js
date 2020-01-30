@@ -10,6 +10,7 @@ module.exports= StyleSheet.create({
       paddingTop:10,
       minHeight:'95%',
       minWidth:'95%',
+      alignContent:'center',
     },
     fixedButton: {
       position:'absolute',
@@ -30,5 +31,20 @@ module.exports= StyleSheet.create({
     },
     editInput: {
       paddingBottom:10,
+    },
+    card: {
+      // alignItems:'center',
+      // alignContent:'center',
+      maxWidth:'90%',
+    },
+    imagePickerModal: {
+      maxWidth:'90%',
+      minWidth:'90%',
+      minHeight:'20%',
+    },
+    imagePickerButtons: {
+      maxHeight:'30%',
+      minHeight:'30%',
+      paddingTop:40,
     },
   });

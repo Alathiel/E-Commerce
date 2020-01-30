@@ -28,7 +28,7 @@ var items = [{
             txn.executeSql('Insert INTO `Users` (username,password,admin) VALUES ("Admin","admin",1)', []);
           }
         });
-        txn.executeSql('CREATE TABLE IF NOT EXISTS Items(id INTEGER PRIMARY KEY AUTOINCREMENT,name VARCHAR(30),category VARCHAR(30), adminId INTEGER, FOREIGN KEY(adminId) REFERENCES Users(id))',[]);
+        txn.executeSql('CREATE TABLE IF NOT EXISTS Items(id INTEGER PRIMARY KEY AUTOINCREMENT,name VARCHAR(30),category VARCHAR(30), adminId INTEGER, img VARCHAR(30), FOREIGN KEY(adminId) REFERENCES Users(id))',[]);
         txn.executeSql('CREATE TABLE IF NOT EXISTS Logged(login INTEGER, user INTEGER, FOREIGN KEY(user) REFERENCES Users(id))',[]);
 
         // items.forEach(element => {
