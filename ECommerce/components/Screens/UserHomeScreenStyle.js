@@ -25,6 +25,11 @@ module.exports= StyleSheet.create({
       alignContent: "center",
       justifyContent: "center",
     },
+    modal: {
+      maxHeight:'40%',
+      alignContent: "center",
+      justifyContent: "center",
+    },
     editModal: {
       maxWidth:'90%',
       minWidth:'90%',

@@ -102,7 +102,7 @@ export default class UserHomeScreen extends React.Component {
                 alert(response.error);
             }
             else {
-                this.setState({source:  "file:///" + response.uri, icon_name: response.fileName, avatar_url:response.uri});
+                this.setState({source:  "file:///" + response.path, icon_name: response.fileName, avatar_url:response.uri});
             }
         });
     }
@@ -125,9 +125,26 @@ export default class UserHomeScreen extends React.Component {
         });
     }
 
+    delete(category){
+        db.transaction(function (txn) {
+            txn.executeSql('Delete from Items where category="' + category + '"',[]);
+        });
+        categories = categories.filter(categories => categories.category !== category);
+        this.getCategories();
+    }
+
     render() {
         return (
             <View style={styles.MainContainer}>
+                <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
+                    <ModalContent>
+                        <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false });
+                            this.delete(this.state.category);}}/>
+                        <ModalButton text='Edit' onPress={() => {this.setState({ edit: true }); this.showInfo(this.state.index);}}/>
+                        <ModalButton text='Show Informations' onPress={() => {this.setState({ info: true }); this.showInfo(this.state.index);}}/>
+                    </ModalContent>
+                </Modal>
+
                 <Modal onHardwareBackPress={() => this.setState({ add: false })} modalStyle={styles.editModal} modalTitle={<ModalTitle title="Adding" />} visible={this.state.add}
                     onTouchOutside={() => {this.setState({icon_name:'Pick an Image', add: false});}} footer={
                     <ModalFooter>
@@ -167,7 +184,8 @@ export default class UserHomeScreen extends React.Component {
                     <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
                     {
                         categories.map((l, i) => (
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}>
+                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
+                            onLongPress={() => this.setState({ isVisible: true, category: l.category})}>
                             <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.category}</Text>
                             </Card>
