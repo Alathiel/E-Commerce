@@ -26,7 +26,7 @@ export default class UserHomeScreen extends React.Component {
             icon_name:'Pick Image',
         };
         this.props.navigation.addListener('willFocus', () => {
-            categories.splice(0);
+            categories = categories.filter(categories => categories.adminId == userID);
             this.getCategories();
         });
         this.props.navigation.addListener('didFocus', () => {});
