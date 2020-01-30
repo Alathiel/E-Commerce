@@ -9,6 +9,7 @@ import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 import ImagePicker from 'react-native-image-picker';
+import NavigationService from '../utils/NavigationService';
 
 var categories = [];
 var userID;
@@ -26,13 +27,41 @@ export default class UserHomeScreen extends React.Component {
         };
     }
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerLeft: ()=>(
+                <TouchableWithoutFeedback onPress={() => NavigationService.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
+                    <Icon name='home' type='material-icons' color='black'/>
+                </TouchableWithoutFeedback>
+            ),
+            headerRight: ()=>(
+                <TouchableWithoutFeedback onPress={() => NavigationService.navigate('Settings')} style={{paddingLeft: 20, paddingTop:2}}>
+                    <Icon name='settings' type='material-icons' color='black'/>
+                </TouchableWithoutFeedback>
+            ),
+            headerStyle: {
+                backgroundColor: 'rgba(52, 52, 52, 0.0)',
+                shadowColor: 'transparent',
+                borderBottomWidth: 0,
+                shadowOpacity: 0,
+                shadowOffset: {
+                  height: 0,
+                  width: 0,
+                },
+                shadowRadius: 0,
+                elevation: 0,
+            },
+        };
+    };
+
     componentWillMount(){
+        this.getUserID();
         const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
     }
 
     componentDidMount(){
-        this.getCategories();
         this.getUserID();
+        this.getCategories();
         this.forceRemount();
     }
 
@@ -48,7 +77,7 @@ export default class UserHomeScreen extends React.Component {
     getCategories()
     {
         db.transaction(function (txn) {
-            txn.executeSql('SELECT * FROM `Items` GROUP BY category', [], function (tx, res) {
+            txn.executeSql('SELECT * FROM `Items` GROUP BY category HAVING adminId=' + userID, [], function (tx, res) {
                 var len = res.rows.length;
                 var rows = [];
                 for (let i = 0; i < len; i++) {

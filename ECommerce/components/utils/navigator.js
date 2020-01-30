@@ -15,34 +15,36 @@ import Login from '../Screens/Authentication Flow/Login.js';
 import SignIn from '../Screens/Authentication Flow/SignIn.js';
 import ProductsView from '../Screens/ProductsView';
 import LoadingScreen from '../Screens/LoadingScreen.js';
+import SettingsScreen from '../Screens/SettingsScreen';
 
 const AppStack = createStackNavigator(
   {
     UserHome: UserHomeScreen,
     ProductsView: ProductsView,
+    Settings: SettingsScreen,
     // AdminHome: AdminHomeScreen,
   },
   {
     initialRouteName: 'UserHome',
-    defaultNavigationOptions: {
-        headerLeft: ()=>(
-          <TouchableWithoutFeedback onPress={() => NavigationService.navigate('App')} style={{paddingLeft: 20, paddingTop:2}}>
-            <Icon name='home' type='material-icons' color='black'/>
-          </TouchableWithoutFeedback>
-        ),
-        headerStyle: {
-          backgroundColor: 'rgba(52, 52, 52, 0.0)',
-          shadowColor: 'transparent',
-          borderBottomWidth: 0,
-          shadowOpacity: 0,
-          shadowOffset: {
-            height: 0,
-            width: 0,
-          },
-          shadowRadius: 0,
-          elevation: 0,
-        },
-    },
+    // defaultNavigationOptions: {
+    //   headerLeft: ()=>(
+    //     <TouchableWithoutFeedback onPress={() => alert('a')} style={{paddingLeft: 20, paddingTop:2}}>
+    //       <Icon name='home' type='material-icons' color='black'/>
+    //     </TouchableWithoutFeedback>
+    //   ),
+    //   headerStyle: {
+    //     backgroundColor: 'rgba(52, 52, 52, 0.0)',
+    //     shadowColor: 'transparent',
+    //     borderBottomWidth: 0,
+    //     shadowOpacity: 0,
+    //     shadowOffset: {
+    //       height: 0,
+    //       width: 0,
+    //     },
+    //     shadowRadius: 0,
+    //     elevation: 0,
+    //   },
+    // },
   },
 );
 
@@ -62,13 +64,55 @@ const LoginStack = createStackNavigator(
 const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
-        Loading: LoadingScreen,
-        LoginFlow: LoginStack,
-        App: AppStack,
+        Loading:LoadingScreen,
+        LoginFlow:{
+          screen:  LoginStack,
+          headerMode: null,
+        },
+        App:{
+          screen: AppStack,
+          // navigationOptions: {
+          //   headerLeft: ()=>(
+          //     <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
+          //       <Icon name='home' type='material-icons' color='black'/>
+          //     </TouchableWithoutFeedback>
+          //   ),
+          //   headerStyle: {
+          //     backgroundColor: 'rgba(52, 52, 52, 0.0)',
+          //     shadowColor: 'transparent',
+          //     borderBottomWidth: 0,
+          //     shadowOpacity: 0,
+          //     shadowOffset: {
+          //       height: 0,
+          //       width: 0,
+          //     },
+          //     shadowRadius: 0,
+          //     elevation: 0,
+          //   },
+          // },
+        },
     },
     {
       initialRouteName:'Loading',
-      headerMode: 'none',
+      defaultNavigationOptions: {
+        headerLeft: ()=>(
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
+            <Icon name='home' type='material-icons' color='black'/>
+          </TouchableWithoutFeedback>
+        ),
+        headerStyle: {
+          backgroundColor: 'rgba(52, 52, 52, 0.0)',
+          shadowColor: 'transparent',
+          borderBottomWidth: 0,
+          shadowOpacity: 0,
+          shadowOffset: {
+            height: 0,
+            width: 0,
+          },
+          shadowRadius: 0,
+          elevation: 0,
+        },
+      },
     },
   ),
 );

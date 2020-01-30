@@ -38,8 +38,8 @@ module.exports= StyleSheet.create({
       paddingBottom:10,
     },
     card: {
-      // alignItems:'center',
-      // alignContent:'center',
+      alignSelf:'center',
+      minWidth:'90%',
       maxWidth:'90%',
     },
     imagePickerModal: {

@@ -10,6 +10,7 @@ import BackgroundTimer from 'react-native-background-timer';
 import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 import { NavigationEvents } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
+import NavigationService from '../utils/NavigationService';
 
 var datas = [];
 var userID;
@@ -40,6 +41,27 @@ export default class ProductsView extends React.Component {
         this.props.navigation.addListener('didFocus', () => {});
     }
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerLeft: ()=>(
+                    <TouchableWithoutFeedback onPress={() => NavigationService.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
+                      <Icon name='home' type='material-icons' color='black'/>
+                    </TouchableWithoutFeedback>
+            ),
+            headerStyle: {
+                backgroundColor: 'rgba(52, 52, 52, 0.0)',
+                shadowColor: 'transparent',
+                borderBottomWidth: 0,
+                shadowOpacity: 0,
+                shadowOffset: {
+                  height: 0,
+                  width: 0,
+                },
+                shadowRadius: 0,
+                elevation: 0,
+            },
+        };
+    };
 
     componentWillMount(){
         const refreshTimeout = BackgroundTimer.setTimeout(() => {this.getDatas();}, 200);
