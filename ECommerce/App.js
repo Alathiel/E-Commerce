@@ -26,6 +26,7 @@ var items = [{
           var len = res.rows.length;
           if (len === 0){
             txn.executeSql('Insert INTO `Users` (username,password,admin) VALUES ("Admin","admin",1)', []);
+            txn.executeSql('Insert INTO `Users` (username,password,admin) VALUES ("AdminYes","adminyes",1)', []);
           }
         });
         txn.executeSql('CREATE TABLE IF NOT EXISTS Items(id INTEGER PRIMARY KEY AUTOINCREMENT,name VARCHAR(30),category VARCHAR(30), adminId INTEGER, img VARCHAR(30), FOREIGN KEY(adminId) REFERENCES Users(id))',[]);

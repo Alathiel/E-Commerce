@@ -54,8 +54,8 @@ export default class ProductsView extends React.Component {
                 borderBottomWidth: 0,
                 shadowOpacity: 0,
                 shadowOffset: {
-                  height: 0,
-                  width: 0,
+                    height: 0,
+                    width: 0,
                 },
                 shadowRadius: 0,
                 elevation: 0,

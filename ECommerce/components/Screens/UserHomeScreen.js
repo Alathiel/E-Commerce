@@ -25,6 +25,11 @@ export default class UserHomeScreen extends React.Component {
             imagePicker:false,
             icon_name:'Pick Image',
         };
+        this.props.navigation.addListener('willFocus', () => {
+            categories.splice(0);
+            this.getCategories();
+        });
+        this.props.navigation.addListener('didFocus', () => {});
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -45,8 +50,8 @@ export default class UserHomeScreen extends React.Component {
                 borderBottomWidth: 0,
                 shadowOpacity: 0,
                 shadowOffset: {
-                  height: 0,
-                  width: 0,
+                    height: 0,
+                    width: 0,
                 },
                 shadowRadius: 0,
                 elevation: 0,

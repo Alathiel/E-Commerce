@@ -25,19 +25,14 @@ export default class SettingsScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            headerLeft: ()=>(
-                <TouchableWithoutFeedback onPress={() => NavigationService.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
-                    <Icon name='home' type='material-icons' color='black'/>
-                </TouchableWithoutFeedback>
-            ),
             headerStyle: {
                 backgroundColor: 'rgba(52, 52, 52, 0.0)',
                 shadowColor: 'transparent',
                 borderBottomWidth: 0,
                 shadowOpacity: 0,
                 shadowOffset: {
-                  height: 0,
-                  width: 0,
+                    height: 0,
+                    width: 0,
                 },
                 shadowRadius: 0,
                 elevation: 0,
@@ -45,10 +40,18 @@ export default class SettingsScreen extends React.Component {
         };
     };
 
+    logout(){
+        db.transaction(function (txn) {
+            txn.executeSql('UPDATE Logged SET login=0',[]);
+        });
+        NavigationService.navigate('Home');
+    }
+
 
     render() {
         return (
             <View style={styles.MainContainer}>
+                <Button title='Logout' onPress={()=> this.logout()}></Button>
             </View>
         );
     }
