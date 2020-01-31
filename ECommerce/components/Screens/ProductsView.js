@@ -95,6 +95,7 @@ export default class ProductsView extends React.Component {
             }
         });
     }
+
     photoPick= async() =>{
         const options = {
             title: 'Select Image',
@@ -114,6 +115,7 @@ export default class ProductsView extends React.Component {
             }
         });
     }
+
     getUserID(){
         db.transaction(function (txn) {
             txn.executeSql('SELECT * FROM Logged', [], function (tx, res) {
@@ -122,6 +124,7 @@ export default class ProductsView extends React.Component {
             });
         });
     }
+
     getDatas()
     {
         var categoryItem = this.state.categoryItem;
@@ -144,7 +147,6 @@ export default class ProductsView extends React.Component {
           reload: reload + 1,
         }));
     }
-
 
     onDidFocus()
     {
@@ -198,6 +200,30 @@ export default class ProductsView extends React.Component {
         this.getDatas();
     }
 
+    showEditInfo(id){
+        datas.forEach(element => {
+            if (element.id == id){
+                this.setState({name:element.name,icon_name:element.img});
+            }
+        });
+    }
+
+    editInfo(id){
+        var name = this.state.name;
+        var source = this.state.source;
+        datas.forEach(element=>{
+            if(element.id == id){
+                element.name = name;
+                element.img = source;
+            }
+        });
+
+        db.transaction(function (txn) {
+            txn.executeSql('UPDATE Items SET name="' + name + '" , img="' + source + '" WHERE id=' + id,[]);
+        });
+        this.forceRemount();
+    }
+
     render() {
         return (
             <View style={styles.MainContainer}>
@@ -210,40 +236,10 @@ export default class ProductsView extends React.Component {
                 <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
                     <ModalContent>
                         <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false }); this.delete(this.state.id);}}/>
-                        <ModalButton text='Edit' onPress={() => {this.setState({ edit: true }); this.showInfo(this.state.index);}}/>
+                        <ModalButton text='Edit' onPress={() => {this.setState({ edit: true }); this.showEditInfo(this.state.id);}}/>
                         {/* <ModalButton text='Show Informations' onPress={() => {this.setState({ info: true }); this.showInfo(this.state.index);}}/> */}
                     </ModalContent>
                 </Modal>
-
-                {/* <Modal onHardwareBackPress={() => this.setState({ info: false })} modalStyle={styles.showInfoModal} modalTitle={<ModalTitle title="Site Informations" />}
-                    visible={this.state.info} onTouchOutside={() => {this.setState({ info: false, isVisible: false });}}>
-                    <ModalContent>
-                    <Text style={styles.infoText}>Name: {this.state.name}</Text>
-                    <Text style={styles.infoText}>Category: {this.state.category}</Text>
-                    </ModalContent>
-                </Modal> */}
-
-                {/* <Modal onHardwareBackPress={() => this.setState({ edit: false })} modalStyle={styles.editModal} modalTitle={<ModalTitle title="Editing" />} visible={this.state.edit}
-                onTouchOutside={() => {this.setState({ edit: false, isVisible: false});}} footer={
-                    <ModalFooter>
-                        <ModalButton text="Cancel" onPress={() => {this.setState({ edit: false, isVisible: false});}}/>
-                        <ModalButton text="Apply" onPress={() => {this.editInfo(this.state.index);
-                            this.setState({ edit: false, isVisible: false});}}/>
-                    </ModalFooter>}>
-
-                    <ModalContent>
-                        <Input placeholder='Insert name' style={styles.editInput} onChangeText={(name) => this.setState({name})}
-                            value={this.state.name} label='Name' labelStyle={styles.editLabel}/>
-                        <View style={{flexDirection:'row', paddingTop:30,}}>
-                            <TouchableWithoutFeedback onPress={() => {this.setState({imagePicker: true})}}>
-                                <Icon name="photo" type="material-icons" color='grey'/>
-                            </TouchableWithoutFeedback> 
-                            <TouchableWithoutFeedback  onPress={() => {this.setState({imagePicker: true})}}>
-                                <Text style={{color:'grey',fontSize:20,maxWidth:'90%'}} numberOfLines={1}>{this.state.avatar_url}</Text>
-                            </TouchableWithoutFeedback>
-                        </View>
-                    </ModalContent>
-                </Modal> */}
 
                 <Modal onHardwareBackPress={() => this.setState({ add: false })} modalStyle={styles.editModal} modalTitle={<ModalTitle title="Adding" />} visible={this.state.add}
                 onTouchOutside={() => {this.setState({icon_name:'Pick an Image', add: false});}} footer={
@@ -276,6 +272,36 @@ export default class ProductsView extends React.Component {
                         this.setState({imagePicker: false});}}/>
                     </ModalContent>
                 </Modal>
+
+                <Modal onHardwareBackPress={() => this.setState({ edit: false })} modalStyle={styles.editModal} modalTitle={<ModalTitle title="Editing" />} visible={this.state.edit}
+                onTouchOutside={() => {this.setState({ edit: false, isVisible: false});}} footer={
+                    <ModalFooter>
+                        <ModalButton text="Cancel" onPress={() => {this.setState({ edit: false, isVisible: false});}}/>
+                        <ModalButton text="Apply" onPress={() => {this.editInfo(this.state.id);
+                            this.setState({ edit: false, isVisible: false});}}/>
+                    </ModalFooter>}>
+
+                    <ModalContent>
+                        <Input placeholder='Insert name' style={styles.editInput} onChangeText={(name) => this.setState({name})}
+                            value={this.state.name} label='Name' labelStyle={styles.editLabel}/>
+                        <View style={{flexDirection:'row', paddingTop:30,}}>
+                            <TouchableWithoutFeedback onPress={() => {this.setState({imagePicker: true})}}>
+                                <Icon name="photo" type="material-icons" color='grey'/>
+                            </TouchableWithoutFeedback> 
+                            <TouchableWithoutFeedback  onPress={() => {this.setState({imagePicker: true})}}>
+                                <Text style={{color:'grey',fontSize:20,maxWidth:'90%'}} numberOfLines={1}>{this.icon_name}</Text>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    </ModalContent>
+                </Modal>
+
+                {/* <Modal onHardwareBackPress={() => this.setState({ info: false })} modalStyle={styles.showInfoModal} modalTitle={<ModalTitle title="Site Informations" />}
+                    visible={this.state.info} onTouchOutside={() => {this.setState({ info: false, isVisible: false });}}>
+                    <ModalContent>
+                    <Text style={styles.infoText}>Name: {this.state.name}</Text>
+                    <Text style={styles.infoText}>Category: {this.state.category}</Text>
+                    </ModalContent>
+                </Modal> */}
 
                 <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
                 <Button title='refresh' onPress={()=> this.getDatas()}></Button>
