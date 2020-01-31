@@ -38,7 +38,7 @@ export default class SignIn extends React.Component {
                     if (i == len)
                     {
                         db.transaction(function (txn) {
-                            txn.executeSql('Insert INTO `Users` (username,password) VALUES ("'+username+'","'+password+'")',[]);
+                            txn.executeSql('Insert INTO `Users` (username,password,admin) VALUES ("'+username+'","'+password+'","No")',[]);
                         });
                         alert("Utente aggiunto con successo");
                         this.setState({username:'', password:''});

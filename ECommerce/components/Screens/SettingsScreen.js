@@ -8,11 +8,10 @@ import styles from './UserHomeScreenStyle.js';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
-import ImagePicker from 'react-native-image-picker';
 import NavigationService from '../utils/NavigationService';
 
-var categories = [];
 var userID;
+var permissions;
 const db = SQLite.openDatabase('ECommerce.db', '1.0', '', 1);
 
 export default class SettingsScreen extends React.Component {
@@ -20,7 +19,18 @@ export default class SettingsScreen extends React.Component {
         super(props);
         this.state = {
             reload: 0,
+            admin : 'No',
         };
+        this.props.navigation.addListener('willFocus', () => {
+            this.getUserID();
+            this.showPermissions();
+            this.setState({admin:permissions});
+        });
+        this.props.navigation.addListener('didFocus', () => {
+            this.getUserID();
+            this.showPermissions();
+            this.setState({admin:permissions});
+        });
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -40,6 +50,34 @@ export default class SettingsScreen extends React.Component {
         };
     };
 
+    componentWillMount(){
+        this.getUserID();
+    }
+
+    componentDidMount(){
+        this.getUserID();
+        // this.showPermissions();
+    }
+
+    getUserID(){
+        db.transaction(function (txn) {
+            txn.executeSql('SELECT * FROM Logged', [], function (tx, res) {
+                let row = res.rows.item(0);
+                userID = row.user;
+            });
+        });
+    }
+
+    showPermissions(){
+        db.transaction(function (txn) {
+            txn.executeSql('SELECT * FROM Users WHERE id='+userID, [], function (tx, res) {
+                var row = res.rows.item(0);
+                permissions=row.admin;
+            });
+        });
+        this.forceRemount();
+    }
+
     logout(){
         db.transaction(function (txn) {
             txn.executeSql('UPDATE Logged SET login=0',[]);
@@ -47,10 +85,16 @@ export default class SettingsScreen extends React.Component {
         NavigationService.navigate('Home');
     }
 
+    forceRemount = () => {
+        this.setState(({ reload }) => ({
+          reload: reload + 1,
+        }));
+    }
 
     render() {
         return (
-            <View style={styles.MainContainer}>
+            <View style={styles.MainContainer} key={this.state.reload}>
+                <Text style={{fontSize:20,alignSelf:'center'}}>Admin Permissions: {this.state.admin}</Text>
                 <Button title='Logout' onPress={()=> this.logout()}></Button>
             </View>
         );

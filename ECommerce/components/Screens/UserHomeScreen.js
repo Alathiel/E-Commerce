@@ -183,7 +183,7 @@ export default class UserHomeScreen extends React.Component {
         db.transaction(function (txn) {
             txn.executeSql('UPDATE Items SET category="' + new_category + '" WHERE category="' + category + '"',[]);
         });
-        this.forceRemount();
+        this.getCategories();
     }
 
     render() {
