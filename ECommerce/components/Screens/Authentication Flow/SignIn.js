@@ -10,6 +10,7 @@ import SQLite from 'react-native-sqlite-2';
 
 const db = SQLite.openDatabase('ECommerce.db', '1.0', '', 1);
 var x = true;
+var users = [];
 
 export default class SignIn extends React.Component {
     constructor(props) {
@@ -23,25 +24,20 @@ export default class SignIn extends React.Component {
     signIn(){
         let username = this.state.username;
         let password = this.state.password;
-        var i = 0;
         if (username!='' && password!=''){
             db.transaction(function (txn) {
                 txn.executeSql('SELECT * FROM `Users`', [], function (tx, res) {
                     var len = res.rows.length;
-                    for (; i < len; i++) {
-                        let row = res.rows.item(i);
-                        if (username == row.username)
-                        {
-                            break;
-                        }
+                    for (var i = 0; i < len; i++) {
+                        users [i] = res.rows.item(i);
                     }
-                    if (i == len)
+                    users = users.filter(users => users.username == username);
+                    if (users.length == 0)
                     {
                         db.transaction(function (txn) {
                             txn.executeSql('Insert INTO `Users` (username,password,admin) VALUES ("'+username+'","'+password+'","No")',[]);
                         });
                         alert("Utente aggiunto con successo");
-                        this.setState({username:'', password:''});
                     }
                     else {
                         alert('Username già in uso, prova con un altro');
@@ -52,6 +48,7 @@ export default class SignIn extends React.Component {
         else {
             alert('Compila tutti i campi');
         }
+        this.setState({username:'', password:''});
     }
 
     render() {
