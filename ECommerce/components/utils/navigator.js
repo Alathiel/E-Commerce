@@ -17,6 +17,7 @@ import ProductsView from '../Screens/Admin/ProductsView';
 import LoadingScreen from '../Screens/LoadingScreen.js';
 import SettingsScreen from '../Screens/SettingsScreen';
 import UserHomeScreen from '../Screens/User/UserHomeScreen';
+import UserProductsView from '../Screens/User/ProductsView';
 
 const AppStack = createStackNavigator(
   {
@@ -24,7 +25,7 @@ const AppStack = createStackNavigator(
     ProductsView: ProductsView,
     Settings: SettingsScreen,
     UserHome: UserHomeScreen,
-    // UserProductsView: ,
+    UserProductsView: UserProductsView,
   },
   {
     initialRouteName: 'AdminHome',

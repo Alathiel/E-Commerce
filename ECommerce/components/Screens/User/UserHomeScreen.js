@@ -114,7 +114,7 @@ export default class UserHomeScreen extends React.Component {
                     <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
                     {
                         categories.map((l, i) => (
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
+                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('UserProductsView',{category: l.category})}
                             onLongPress={() => this.setState({ isVisible: true, category: l.category})}>
                             <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.category}</Text>
