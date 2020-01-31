@@ -26,7 +26,9 @@ export default class UserHomeScreen extends React.Component {
             // categories = categories.filter(categories => categories.adminId == userID);
             this.getCategories();
         });
-        this.props.navigation.addListener('didFocus', () => {});
+        this.props.navigation.addListener('didFocus', () => {
+            this.getCategories();
+        });
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -59,9 +61,11 @@ export default class UserHomeScreen extends React.Component {
     componentWillMount(){ //first load
         this.getUserID();
         const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
+        const timeoutId2 = BackgroundTimer.setTimeout(() => {this.getCategories();}, 1000);
     }
 
     componentDidMount(){
+        const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
         this.getUserID();
         this.getCategories();
         this.forceRemount();

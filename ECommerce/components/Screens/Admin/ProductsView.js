@@ -65,9 +65,11 @@ export default class ProductsView extends React.Component {
 
     componentWillMount(){
         const refreshTimeout = BackgroundTimer.setTimeout(() => {this.getDatas();}, 200);
+        const refreshTimeout2 = BackgroundTimer.setTimeout(() => {this.getDatas();}, 1000);
     }
 
     componentDidMount(){
+        const refreshTimeout = BackgroundTimer.setTimeout(() => {this.getDatas();}, 200);
         this.setState({categoryItem: this.props.navigation.getParam('category','default-value')});
         this.getUserID();
         this.getDatas();

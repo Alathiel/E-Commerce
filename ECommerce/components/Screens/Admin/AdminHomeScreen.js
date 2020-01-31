@@ -65,9 +65,11 @@ export default class AdminHomeScreen extends React.Component {
     componentWillMount(){ //first load
         this.getUserID();
         const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
+        const timeoutId2 = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
     }
 
     componentDidMount(){
+        const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
         this.getUserID();
         this.getCategories();
         this.forceRemount();
