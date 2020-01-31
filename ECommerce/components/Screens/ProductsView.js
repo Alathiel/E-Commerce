@@ -190,6 +190,13 @@ export default class ProductsView extends React.Component {
         }
     }
 
+    delete(id){
+        db.transaction(function (txn) {
+            txn.executeSql('Delete from Items where id=' + id,[]);
+        });
+        datas = datas.filter(datas => datas.id !== id);
+        this.getDatas();
+    }
 
     render() {
         return (
@@ -200,14 +207,13 @@ export default class ProductsView extends React.Component {
                 onWillBlur={payload => console.log('will blur', payload)}
                 onDidBlur={payload => console.log('did blur', payload)}
                 />
-            {/* <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
+                <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
                     <ModalContent>
-                        <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false });
-                            this.delete(this.state.index);}}/>
+                        <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false }); this.delete(this.state.id);}}/>
                         <ModalButton text='Edit' onPress={() => {this.setState({ edit: true }); this.showInfo(this.state.index);}}/>
-                        <ModalButton text='Show Informations' onPress={() => {this.setState({ info: true }); this.showInfo(this.state.index);}}/>
+                        {/* <ModalButton text='Show Informations' onPress={() => {this.setState({ info: true }); this.showInfo(this.state.index);}}/> */}
                     </ModalContent>
-                </Modal> */}
+                </Modal>
 
                 {/* <Modal onHardwareBackPress={() => this.setState({ info: false })} modalStyle={styles.showInfoModal} modalTitle={<ModalTitle title="Site Informations" />}
                     visible={this.state.info} onTouchOutside={() => {this.setState({ info: false, isVisible: false });}}>
@@ -273,12 +279,12 @@ export default class ProductsView extends React.Component {
 
                 <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
                 <Button title='refresh' onPress={()=> this.getDatas()}></Button>
-                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>{this.props.navigation.getParam('category','default-value')}</Text>
+                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>Products of {this.props.navigation.getParam('category','default-value')}</Text>
                     {
                         datas.map((l, i) => (
                             <TouchableWithoutFeedback
                             // onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
-                            onLongPress={() => this.setState({ isVisible: true, category: l.Id})}>
+                            onLongPress={() => this.setState({ isVisible: true, id: l.id})}>
                             <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.name}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.name}</Text>
                             </Card>

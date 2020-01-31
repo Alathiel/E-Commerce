@@ -21,9 +21,11 @@ export default class UserHomeScreen extends React.Component {
         this.state = {
             reload: 0,
             add: false,
-            source:'',
+            edit:false,
             imagePicker:false,
+            source:'',
             icon_name:'Pick Image',
+            new_category:'',
         };
         //account/screen change
         this.props.navigation.addListener('willFocus', () => {
@@ -168,14 +170,29 @@ export default class UserHomeScreen extends React.Component {
         this.getCategories();
     }
 
+    showEditInfo(category){
+        this.setState({new_category:category});
+    }
+
+    editInfo(category,new_category){
+        categories.forEach(element => {
+            if(element.category == category){
+                element.category = new_category;
+            }
+        });
+        db.transaction(function (txn) {
+            txn.executeSql('UPDATE Items SET category="' + new_category + '" WHERE category="' + category + '"',[]);
+        });
+        this.forceRemount();
+    }
+
     render() {
         return (
             <View style={styles.MainContainer}>
                 <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
                     <ModalContent>
-                        <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false });
-                            this.delete(this.state.category);}}/>
-                        <ModalButton text='Edit' onPress={() => {this.setState({ edit: true }); this.showInfo(this.state.index);}}/>
+                        <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false }); this.delete(this.state.category);}}/>
+                        <ModalButton text='Edit' onPress={() => {this.setState({ edit: true }); this.showEditInfo(this.state.category);}}/>
                         <ModalButton text='Show Informations' onPress={() => {this.setState({ info: true }); this.showInfo(this.state.index);}}/>
                     </ModalContent>
                 </Modal>
@@ -211,6 +228,20 @@ export default class UserHomeScreen extends React.Component {
                         this.setState({imagePicker: false});}}/>
                         <ModalButton style={styles.imagePickerButtons} text='From Camera' onPress={() => {this.photoPick();
                         this.setState({imagePicker: false});}}/>
+                    </ModalContent>
+                </Modal>
+
+                <Modal onHardwareBackPress={() => this.setState({ edit: false })} modalStyle={styles.editModal} modalTitle={<ModalTitle title="Editing" />} visible={this.state.edit}
+                onTouchOutside={() => {this.setState({ edit: false, isVisible: false});}} footer={
+                    <ModalFooter>
+                        <ModalButton text="Cancel" onPress={() => {this.setState({ edit: false, isVisible: false});}}/>
+                        <ModalButton text="Apply" onPress={() => {this.editInfo(this.state.category,this.state.new_category);
+                            this.setState({ edit: false, isVisible: false});}}/>
+                    </ModalFooter>}>
+
+                    <ModalContent>
+                        <Input placeholder='Insert category name' style={styles.editInput} onChangeText={(new_category) => this.setState({new_category})}
+                            value={this.state.new_category} label='Category name' labelStyle={styles.editLabel}/>
                     </ModalContent>
                 </Modal>
 

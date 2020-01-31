@@ -15,7 +15,7 @@ module.exports= StyleSheet.create({
     fixedButton: {
       position:'absolute',
       bottom: 30,
-      right: 30,
+      right: 20,
       width: 46,
       height: 46,
       backgroundColor: "#42a5f5",
