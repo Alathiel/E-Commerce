@@ -28,7 +28,15 @@ export default class UserHomeScreen extends React.Component {
                   NavigationService.navigate('LoginFlow');
                 }
                 else {
-                  NavigationService.navigate('App');
+                  txn.executeSql('SELECT * FROM Users where id='+row.user, [], function (tx, res) {
+                    var rows=res.rows.item(0);
+                    if(rows.admin == 'Yes'){
+                      NavigationService.navigate('AdminHome');
+                    }
+                    else{
+                      NavigationService.navigate('UserHome');
+                    }
+                  });
                 }
               }
             });
