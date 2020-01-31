@@ -4,7 +4,6 @@
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler, ImageBackground} from 'react-native';
 import {Button, Icon, Input, Text, Card, Image} from 'react-native-elements';
-import styles from './UserHomeScreenStyle.js';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
@@ -93,7 +92,7 @@ export default class SettingsScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.MainContainer} key={this.state.reload}>
+            <View key={this.state.reload}>
                 <Text style={{fontSize:20,alignSelf:'center'}}>Admin Permissions: {this.state.admin}</Text>
                 <Button title='Logout' onPress={()=> this.logout()}></Button>
             </View>

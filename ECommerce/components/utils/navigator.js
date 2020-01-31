@@ -9,23 +9,25 @@ import { createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import NavigationService from './NavigationService';
 //screens
-import UserHomeScreen from '../Screens/UserHomeScreen.js';
+import AdminHomeScreen from '../Screens/Admin/AdminHomeScreen.js';
 import LoginHome from '../Screens/Authentication Flow/LoginHome.js';
 import Login from '../Screens/Authentication Flow/Login.js';
 import SignIn from '../Screens/Authentication Flow/SignIn.js';
-import ProductsView from '../Screens/ProductsView';
+import ProductsView from '../Screens/Admin/ProductsView';
 import LoadingScreen from '../Screens/LoadingScreen.js';
 import SettingsScreen from '../Screens/SettingsScreen';
+import UserHomeScreen from '../Screens/User/UserHomeScreen';
 
 const AppStack = createStackNavigator(
   {
-    UserHome: UserHomeScreen,
+    AdminHome: AdminHomeScreen,
     ProductsView: ProductsView,
     Settings: SettingsScreen,
-    // AdminHome: AdminHomeScreen,
+    UserHome: UserHomeScreen,
+    // UserProductsView: ,
   },
   {
-    initialRouteName: 'UserHome',
+    initialRouteName: 'AdminHome',
   },
 );
 

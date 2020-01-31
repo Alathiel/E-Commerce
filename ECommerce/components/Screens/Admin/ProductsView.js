@@ -3,14 +3,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
-import {ListItem, Input, Text, Card, Icon, Button} from 'react-native-elements';
+import {Input, Text, Card, Icon, Button} from 'react-native-elements';
 import styles from './ProductViewStyle.js';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 import { NavigationEvents } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
-import NavigationService from '../utils/NavigationService';
+import NavigationService from '../../utils/NavigationService';
 
 var datas = [];
 var userID;
@@ -44,7 +44,7 @@ export default class ProductsView extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
             headerLeft: ()=>(
-                    <TouchableWithoutFeedback onPress={() => NavigationService.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
+                    <TouchableWithoutFeedback onPress={() => NavigationService.navigate('AdminHome')} style={{paddingLeft: 20, paddingTop:2}}>
                       <Icon name='home' type='material-icons' color='black'/>
                     </TouchableWithoutFeedback>
             ),

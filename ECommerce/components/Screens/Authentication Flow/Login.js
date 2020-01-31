@@ -9,7 +9,7 @@ import SQLite from 'react-native-sqlite-2';
 import NavigationService from '../../utils/NavigationService';
 
 const db = SQLite.openDatabase('ECommerce.db', '1.0', '', 1);
-var x = true;
+var users = [];
 
 export default class Login extends React.Component {
     constructor(props) {
@@ -23,28 +23,29 @@ export default class Login extends React.Component {
     login(){
         let username = this.state.username;
         let password = this.state.password;
-        var i=0;
         if (username != '' && password != ''){
             db.transaction(function (txn) {
                 txn.executeSql('SELECT * FROM `Users`', [], function (tx, res) {
                     var len = res.rows.length;
-                    for (; i < len; i++) {
-                        let row = res.rows.item(i);
-                        if (username == row.username && password == row.password)
-                        {
-                            txn.executeSql('UPDATE Logged SET login=1, user='+row.id,[]);
+                    for (var i = 0; i < len; i++) {
+                        users [i] = res.rows.item(i);
+                    }
+                    users = users.filter(users => users.username == username && users.password == password);
+                    if (users.length > 0)
+                    {
+                        txn.executeSql('UPDATE Logged SET login=1, user=' + users [0].id,[]);
+                        if (users [0].admin == 'Yes'){
+                            NavigationService.navigate('AdminHome');
+                        }
+                        else {
                             NavigationService.navigate('UserHome');
-                            break;
                         }
                     }
-                    if (i == len){
+                    else {
                         alert('Login Fallito');
                     }
                 });
             });
-            if (x == false){
-                alert('Login Fallito');
-            }
         }
         else {
             alert('Compila tutti i campi');
