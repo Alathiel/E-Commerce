@@ -26,25 +26,6 @@ const AppStack = createStackNavigator(
   },
   {
     initialRouteName: 'UserHome',
-    // defaultNavigationOptions: {
-    //   headerLeft: ()=>(
-    //     <TouchableWithoutFeedback onPress={() => alert('a')} style={{paddingLeft: 20, paddingTop:2}}>
-    //       <Icon name='home' type='material-icons' color='black'/>
-    //     </TouchableWithoutFeedback>
-    //   ),
-    //   headerStyle: {
-    //     backgroundColor: 'rgba(52, 52, 52, 0.0)',
-    //     shadowColor: 'transparent',
-    //     borderBottomWidth: 0,
-    //     shadowOpacity: 0,
-    //     shadowOffset: {
-    //       height: 0,
-    //       width: 0,
-    //     },
-    //     shadowRadius: 0,
-    //     elevation: 0,
-    //   },
-    // },
   },
 );
 
@@ -71,25 +52,6 @@ const AppContainer = createAppContainer(
         },
         App:{
           screen: AppStack,
-          // navigationOptions: {
-          //   headerLeft: ()=>(
-          //     <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
-          //       <Icon name='home' type='material-icons' color='black'/>
-          //     </TouchableWithoutFeedback>
-          //   ),
-          //   headerStyle: {
-          //     backgroundColor: 'rgba(52, 52, 52, 0.0)',
-          //     shadowColor: 'transparent',
-          //     borderBottomWidth: 0,
-          //     shadowOpacity: 0,
-          //     shadowOffset: {
-          //       height: 0,
-          //       width: 0,
-          //     },
-          //     shadowRadius: 0,
-          //     elevation: 0,
-          //   },
-          // },
         },
     },
     {

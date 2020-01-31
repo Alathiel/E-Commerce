@@ -137,7 +137,7 @@ export default class UserHomeScreen extends React.Component {
                 alert(response.error);
             }
             else {
-                this.setState({source:  "file:///" + response.path, icon_name: response.fileName, avatar_url:response.uri});
+                this.setState({source:  "file:///" + response.path, icon_name: response.fileName});
             }
         });
     }
@@ -155,7 +155,7 @@ export default class UserHomeScreen extends React.Component {
                 alert(response.error);
             }
             else {
-                this.setState({source: "file:///" + response.path, icon_name: response.fileName, avatar_url:response.uri});
+                this.setState({source: "file:///" + response.path, icon_name: response.fileName});
             }
         });
     }

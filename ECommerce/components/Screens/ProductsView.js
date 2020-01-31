@@ -169,15 +169,17 @@ export default class ProductsView extends React.Component {
 
     add(){
         let name = this.state.name;
-        let category=this.state.categoryItem;
-        if (this.state.name){
-            let x = this.check(name,category);
+        let categoryItem=this.state.categoryItem;
+        let img = this.state.source;
+        if (this.state.name && this.state.source){
+            // let x = this.check(name);
+            let x = 0;
             if (x === 0){
                 db.transaction(function (txn) {
-                    txn.executeSql('INSERT INTO Items (name,category,adminId) VALUES ("' + name + '","'+category+'",' + userID + ')',[]);
+                    txn.executeSql('INSERT INTO Items (name,category,adminId,img) VALUES ("' + name + '","'+categoryItem+'",' + userID + ',"' + img + '")',[]);
                 });
-                this.setState({name:'', icon_name:'Pick an Image', add: false});
-                this.getDatas();
+                this.setState({add: false});
+                const timeoutId = BackgroundTimer.setTimeout(() => {this.getDatas(); this.forceRemount();}, 200);
             }
             else {
                 alert('Element already exists');
@@ -274,20 +276,13 @@ export default class ProductsView extends React.Component {
                     <Text h4 style={{textAlign:'center',paddingBottom:10}}>{this.props.navigation.getParam('category','default-value')}</Text>
                     {
                         datas.map((l, i) => (
-                        <ListItem
-                            key={i}
-                            // leftAvatar={{ source: { uri: l.avatar_url } }}
-                            title={l.name}
-                            // subtitle={l.subtitle}
-                            bottomDivider
-                            // rightIcon={
-                            //     <TouchableWithoutFeedback data-id={i} onPress={() => this.setState({ isVisible: true, index: l.index})}>
-                            //         <Icon name="menu" type="material-icons"/>
-                            //     </TouchableWithoutFeedback>
-                            // }
-                            // onPress={() => this.props.navigation.navigate('ProductsView',{url: l.url})}
-                            onLongPress={() => this.setState({ isVisible: true, index: l.i})}
-                            />
+                            <TouchableWithoutFeedback
+                            // onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
+                            onLongPress={() => this.setState({ isVisible: true, category: l.Id})}>
+                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.name}>
+                                <Text style={{textAlign:'center',fontSize:20}}>{l.name}</Text>
+                            </Card>
+                            </TouchableWithoutFeedback>
                         ))
                     }
                 </ScrollView>
