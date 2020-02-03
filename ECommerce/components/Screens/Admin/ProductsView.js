@@ -34,6 +34,7 @@ export default class ProductsView extends React.Component {
             view:true,
             source: '',
             icon_name:'',
+            icon:'view-list',
         };
         this.props.navigation.addListener('willFocus', () => {//category change
             datas.splice(0);
@@ -270,13 +271,12 @@ export default class ProductsView extends React.Component {
         }
     }
 
-    changeState(){
-        if(this.state.view){
-            this.setState({view:false});
-        }
-        else{
-            this.setState({view:true});
-        }
+    changeState()
+    {
+        if(this.state.view)
+        this.setState({view:false,icon:'view-module'});
+        else
+        this.setState({view:true,icon:'view-list'});
     }
 
     render() {
@@ -361,7 +361,7 @@ export default class ProductsView extends React.Component {
 
                 <View style={{flexDirection:'row-reverse'}} backgroundColor='rgba(52, 52, 52, 0.0)'>
                     <TouchableWithoutFeedback onPress={()=>{this.changeState()}}>
-                        <Icon name='home' type='material-icons' color='black'/>
+                        <Icon name={this.state.icon} type='material-community' color='black'/>
                     </TouchableWithoutFeedback>
                 </View>
                 {this.renderItems()}

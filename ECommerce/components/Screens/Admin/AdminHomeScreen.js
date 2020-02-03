@@ -27,6 +27,7 @@ export default class AdminHomeScreen extends React.Component {
             source:'',
             icon_name:'Pick Image',
             new_category:'',
+            icon:'view-list',
             view:true,
         };
         //account/screen change
@@ -35,7 +36,9 @@ export default class AdminHomeScreen extends React.Component {
             categories = categories.filter(categories => categories.adminId == userID);
             this.getCategories();
         });
-        this.props.navigation.addListener('didFocus', () => {});
+        this.props.navigation.addListener('didFocus', () => {
+            // const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
+        });
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -241,9 +244,9 @@ export default class AdminHomeScreen extends React.Component {
     changeState()
     {
         if(this.state.view)
-        this.setState({view:false});
+        this.setState({view:false,icon:'view-module'});
         else
-        this.setState({view:true});
+        this.setState({view:true,icon:'view-list'});
     }
 
     render() {
@@ -306,7 +309,7 @@ export default class AdminHomeScreen extends React.Component {
 
                 <View style={{flexDirection:'row-reverse'}} backgroundColor='rgba(52, 52, 52, 0.0)'>
                     <TouchableWithoutFeedback onPress={()=>{this.changeState()}}>
-                        <Icon name='home' type='material-icons' color='black'/>
+                        <Icon name={this.state.icon} type='material-community' color='black'/>
                     </TouchableWithoutFeedback>
                 </View>
                 {this.renderItems()}
