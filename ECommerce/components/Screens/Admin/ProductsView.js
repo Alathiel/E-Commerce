@@ -2,8 +2,8 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
-import {Input, Text, Card, Icon, Button, Image} from 'react-native-elements';
+import {View,TouchableWithoutFeedback,ScrollView,BackHandler,FlatList} from 'react-native';
+import {Input, Text, Card, Icon, Button, Image, ListItem} from 'react-native-elements';
 import styles from './ProductViewStyle.js';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
@@ -31,6 +31,7 @@ export default class ProductsView extends React.Component {
             info: false,
             add: false,
             imagePicker: false,
+            view:true,
             source: '',
             icon_name:'',
         };
@@ -226,6 +227,58 @@ export default class ProductsView extends React.Component {
         this.forceRemount();
     }
 
+    renderItems(){
+        if(this.state.view){
+            return(
+                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
+                    <Button title='Refresh' onPress={()=> this.getDatas()}/>
+                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>Products of {this.props.navigation.getParam('category','default-value')}</Text>
+                    <FlatList data={datas} numColumns={2} keyExtractor={(l, index) => index.toString()}
+                    renderItem={({item}) => (
+                        <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
+                            <TouchableWithoutFeedback
+                            onPress={() => this.setState({ info: true, uri:item.img, name:item.name, category:item.category})}
+                            onLongPress={() => this.setState({ isVisible: true, id: item.id})}>
+                                <Card containerStyle={styles.card} image={{ uri: item.img}}>
+                                    <Text style={{textAlign:'center',fontSize:20}}>{item.name}</Text>
+                                </Card>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )}/>
+                </ScrollView>
+            );
+        }
+        else{
+            return(
+                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
+                <Button title='Refresh' onPress={()=> this.getDatas()}/>
+                <Text h4 style={{textAlign:'center',paddingBottom:10}}>Products of {this.props.navigation.getParam('category','default-value')}</Text>
+                {
+                    datas.map((l, i) => (
+                      <ListItem
+                        key={i}
+                        leftAvatar={{ source: { uri: l.img } }}
+                        title={l.name}
+                        bottomDivider
+                        onPress={() => this.setState({ info: true, uri:l.img, name:l.name, category:l.category})}
+                            onLongPress={() => this.setState({ isVisible: true, id: l.id})}
+                      />
+                    ))
+                }
+                </ScrollView>
+            );
+        }
+    }
+
+    changeState(){
+        if(this.state.view){
+            this.setState({view:false});
+        }
+        else{
+            this.setState({view:true});
+        }
+    }
+
     render() {
         return (
             <View style={styles.MainContainer}>
@@ -306,21 +359,12 @@ export default class ProductsView extends React.Component {
                     </ModalContent>
                 </Modal>
 
-                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
-                <Button title='refresh' onPress={()=> this.getDatas()}></Button>
-                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>Products of {this.props.navigation.getParam('category','default-value')}</Text>
-                    {
-                        datas.map((l, i) => (
-                            <TouchableWithoutFeedback
-                            onPress={() => this.setState({ info: true, uri:l.img, name:l.name, category:l.category})}
-                            onLongPress={() => this.setState({ isVisible: true, id: l.id})}>
-                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}}>
-                                <Text style={{textAlign:'center',fontSize:20}}>{l.name}</Text>
-                            </Card>
-                            </TouchableWithoutFeedback>
-                        ))
-                    }
-                </ScrollView>
+                <View style={{flexDirection:'row-reverse'}} backgroundColor='rgba(52, 52, 52, 0.0)'>
+                    <TouchableWithoutFeedback onPress={()=>{this.changeState()}}>
+                        <Icon name='home' type='material-icons' color='black'/>
+                    </TouchableWithoutFeedback>
+                </View>
+                {this.renderItems()}
                 <View style={styles.fixedButton}>
                     <TouchableWithoutFeedback onPress={() => this.setState({ add: true, name:'', icon_name:'Pick an Image'})}>
                         <Icon name="add" type="material-icons" color="white"/>

@@ -3,13 +3,14 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
-import {Button, Icon, Input, Text, Card} from 'react-native-elements';
+import {Button, Icon, Input, Text, Card, ListItem} from 'react-native-elements';
 import styles from './AdminHomeScreenStyle.js';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 import ImagePicker from 'react-native-image-picker';
 import NavigationService from '../../utils/NavigationService';
+import { FlatList } from 'react-native-gesture-handler';
 
 var categories = [];
 var userID;
@@ -26,6 +27,7 @@ export default class AdminHomeScreen extends React.Component {
             source:'',
             icon_name:'Pick Image',
             new_category:'',
+            view:true,
         };
         //account/screen change
         this.props.navigation.addListener('willFocus', () => {
@@ -194,6 +196,56 @@ export default class AdminHomeScreen extends React.Component {
         this.getCategories();
     }
 
+    renderItems(){
+        if (this.state.view)
+        {
+            return (
+                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
+                <Button title='Refresh' onPress={()=> this.getCategories()}/>
+                <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
+                <FlatList data={categories} numColumns={2} keyExtractor={(item, index) => index.toString()}
+                    renderItem={({item}) => (
+                        <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
+                            <TouchableWithoutFeedback
+                                onPress={() => this.props.navigation.navigate('ProductsView',{category: item.category})}
+                                onLongPress={() => this.setState({ isVisible: true, category: item.category})}>
+                                <Card containerStyle={styles.card} image={{ uri: item.img}} featuredTitle={item.category}/>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )}/>
+                </ScrollView>
+            );
+        }
+        else {
+            return (
+                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
+                <Button title='Refresh' onPress={()=> this.getCategories()}/>
+                <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
+                {
+                    categories.map((l, i) => (
+                      <ListItem
+                        key={i}
+                        leftAvatar={{ source: { uri: l.img } }}
+                        title={l.category}
+                        bottomDivider
+                        onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
+                        onLongPress={() => this.setState({ isVisible: true, category: l.category})}
+                      />
+                    ))
+                }
+                </ScrollView>
+            );
+        }
+    }
+
+    changeState()
+    {
+        if(this.state.view)
+        this.setState({view:false});
+        else
+        this.setState({view:true});
+    }
+
     render() {
         return (
             <View style={styles.MainContainer}>
@@ -252,18 +304,12 @@ export default class AdminHomeScreen extends React.Component {
                     </ModalContent>
                 </Modal>
 
-                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
-                <Button title='Refresh' onPress={()=> this.getCategories()}></Button>
-                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
-                    {
-                        categories.map((l, i) => (
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
-                            onLongPress={() => this.setState({ isVisible: true, category: l.category})}>
-                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}/>
-                            </TouchableWithoutFeedback>
-                        ))
-                    }
-                </ScrollView>
+                <View style={{flexDirection:'row-reverse'}} backgroundColor='rgba(52, 52, 52, 0.0)'>
+                    <TouchableWithoutFeedback onPress={()=>{this.changeState()}}>
+                        <Icon name='home' type='material-icons' color='black'/>
+                    </TouchableWithoutFeedback>
+                </View>
+                {this.renderItems()}
                 <View style={styles.fixedButton}>
                     <TouchableWithoutFeedback onPress={() => this.setState({ add: true, name:'', category:'', icon_name:'Pick an Image'})}>
                         <Icon name="add" type="material-icons" color="white"/>

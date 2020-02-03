@@ -7,8 +7,8 @@ var {StyleSheet} = React;
 
 module.exports= StyleSheet.create({
   MainContainer: {
-      paddingTop:10,
       minHeight:'95%',
+      maxHeight:'95%',
       minWidth:'95%',
       alignContent:'center',
     },

@@ -2,8 +2,8 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
-import {Button, Icon, Text, Card} from 'react-native-elements';
+import {View,TouchableWithoutFeedback,ScrollView,BackHandler,FlatList} from 'react-native';
+import {Button, Icon, Text, Card, ListItem} from 'react-native-elements';
 import styles from './UserHomeScreenStyle';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
@@ -19,6 +19,7 @@ export default class UserHomeScreen extends React.Component {
         this.state = {
             reload: 0,
             source:'',
+            view:true,
         };
         //account/screen change
         this.props.navigation.addListener('willFocus', () => {
@@ -111,20 +112,61 @@ export default class UserHomeScreen extends React.Component {
         this.props.navigation.navigate('UserProductsView',{category: category});
     }
 
+    renderItems(){
+        if(this.state.view){
+            return(
+                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
+                    <Button title='Refresh' onPress={()=> this.getCategories()}/>
+                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
+                    <FlatList data={categories} numColumns={2} keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
+                            <TouchableWithoutFeedback onPress={() => this.navigation(item.category)}>
+                                <Card containerStyle={styles.card} image={{ uri: item.img}} featuredTitle={item.category}/>
+                            </TouchableWithoutFeedback>
+                        </View>
+                    )}/>
+                </ScrollView>
+            );
+        }
+        else{
+            return(
+                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
+                <Button title='Refresh' onPress={()=> this.getCategories()}/>
+                <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
+                {
+                    categories.map((l, i) => (
+                      <ListItem
+                        key={i}
+                        leftAvatar={{ source: { uri: l.img } }}
+                        title={l.category}
+                        bottomDivider
+                        onPress={() => this.setState({ info: true, uri:l.img, name:l.name, category:l.category})}/>
+                    ))
+                }
+                </ScrollView>
+            );
+        }
+    }
+
+    changeState(){
+        if(this.state.view){
+            this.setState({view:false});
+        }
+        else{
+            this.setState({view:true});
+        }
+    }
+
     render() {
         return (
             <View style={styles.MainContainer}>
-                <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
-                <Button title='Refresh' onPress={()=> this.getCategories()}></Button>
-                    <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
-                    {
-                        categories.map((l, i) => (
-                            <TouchableWithoutFeedback onPress={() => this.navigation(l.category)}>
-                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}/>
-                            </TouchableWithoutFeedback>
-                        ))
-                    }
-                </ScrollView>
+                <View style={{flexDirection:'row-reverse'}} backgroundColor='rgba(52, 52, 52, 0.0)'>
+                    <TouchableWithoutFeedback onPress={()=>{this.changeState()}}>
+                        <Icon name='home' type='material-icons' color='black'/>
+                    </TouchableWithoutFeedback>
+                </View>
+                {this.renderItems()}
             </View>
         );
     }
