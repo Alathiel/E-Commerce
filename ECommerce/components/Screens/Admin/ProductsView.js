@@ -314,7 +314,7 @@ export default class ProductsView extends React.Component {
                             <TouchableWithoutFeedback
                             onPress={() => this.setState({ info: true, uri:l.img, name:l.name, category:l.category})}
                             onLongPress={() => this.setState({ isVisible: true, id: l.id})}>
-                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.name}>
+                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.name}</Text>
                             </Card>
                             </TouchableWithoutFeedback>

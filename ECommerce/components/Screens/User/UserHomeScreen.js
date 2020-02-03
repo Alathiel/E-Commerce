@@ -120,9 +120,7 @@ export default class UserHomeScreen extends React.Component {
                     {
                         categories.map((l, i) => (
                             <TouchableWithoutFeedback onPress={() => this.navigation(l.category)}>
-                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}>
-                                <Text style={{textAlign:'center',fontSize:20}}>{l.category}</Text>
-                            </Card>
+                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}/>
                             </TouchableWithoutFeedback>
                         ))
                     }

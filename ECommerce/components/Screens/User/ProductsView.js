@@ -133,7 +133,7 @@ export default class ProductsView extends React.Component {
                     {
                         datas.map((l, i) => (
                             <TouchableWithoutFeedback onPress={() => this.setState({ info: true, uri:l.img, name:l.name, category:l.category})}>
-                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.name}>
+                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.name}</Text>
                             </Card>
                             </TouchableWithoutFeedback>

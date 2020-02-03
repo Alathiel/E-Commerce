@@ -124,7 +124,7 @@ export default class AdminHomeScreen extends React.Component {
                     txn.executeSql('INSERT INTO Items (name,category,adminId,img) VALUES ("' + name + '","'+category+'",' + userID + ',"' + img + '")',[]);
                 });
                 this.setState({add: false});
-                const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories(); this.forceRemount();}, 200);
+                const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
             }
             else {
                 alert('Element already exists');
@@ -259,9 +259,7 @@ export default class AdminHomeScreen extends React.Component {
                         categories.map((l, i) => (
                             <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
                             onLongPress={() => this.setState({ isVisible: true, category: l.category})}>
-                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}>
-                                <Text style={{textAlign:'center',fontSize:20}}>{l.category}</Text>
-                            </Card>
+                            <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}/>
                             </TouchableWithoutFeedback>
                         ))
                     }
