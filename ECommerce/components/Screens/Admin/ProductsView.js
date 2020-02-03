@@ -320,7 +320,7 @@ export default class ProductsView extends React.Component {
                     }
                 </ScrollView>
                 <View style={styles.fixedButton}>
-                    <TouchableWithoutFeedback onPress={() => this.setState({ add: true, name:'', subtitle:'', url:''})}>
+                    <TouchableWithoutFeedback onPress={() => this.setState({ add: true, name:'', icon_name:'Pick an Image'})}>
                         <Icon name="add" type="material-icons" color="white"/>
                     </TouchableWithoutFeedback>
                 </View>
