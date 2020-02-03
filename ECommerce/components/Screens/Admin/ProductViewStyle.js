@@ -7,13 +7,13 @@ var {StyleSheet} = React;
 
 module.exports= StyleSheet.create({
   MainContainer: {
-        minHeight:'95%',
-        maxHeight:'95%',
+        minHeight:'97%',
+        maxHeight:'97%',
         minWidth:'95%',
     },
     fixedButton: {
         position:'absolute',
-        bottom: 30,
+        bottom: 20,
         right: 20,
         width: 46,
         height: 46,

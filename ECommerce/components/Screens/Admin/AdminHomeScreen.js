@@ -250,7 +250,7 @@ export default class AdminHomeScreen extends React.Component {
     }
 
     render() {
-        return (
+        return (<>
             <View style={styles.MainContainer}>
                 <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
                     <ModalContent>
@@ -313,12 +313,13 @@ export default class AdminHomeScreen extends React.Component {
                     </TouchableWithoutFeedback>
                 </View>
                 {this.renderItems()}
-                <View style={styles.fixedButton}>
-                    <TouchableWithoutFeedback onPress={() => this.setState({ add: true, name:'', category:'', icon_name:'Pick an Image'})}>
-                        <Icon name="add" type="material-icons" color="white"/>
-                    </TouchableWithoutFeedback>
-                </View>
             </View>
+
+            <View style={styles.fixedButton}>
+                <TouchableWithoutFeedback onPress={() => this.setState({ add: true, name:'', category:'', icon_name:'Pick an Image'})}>
+                    <Icon name="add" type="material-icons" color="white"/>
+                </TouchableWithoutFeedback>
+            </View></>
         );
     }
 }

@@ -280,7 +280,7 @@ export default class ProductsView extends React.Component {
     }
 
     render() {
-        return (
+        return (<>
             <View style={styles.MainContainer}>
             <NavigationEvents
                 onWillFocus={payload => console.log('will focus', payload)}
@@ -365,12 +365,12 @@ export default class ProductsView extends React.Component {
                     </TouchableWithoutFeedback>
                 </View>
                 {this.renderItems()}
-                <View style={styles.fixedButton}>
-                    <TouchableWithoutFeedback onPress={() => this.setState({ add: true, name:'', icon_name:'Pick an Image'})}>
-                        <Icon name="add" type="material-icons" color="white"/>
-                    </TouchableWithoutFeedback>
-                </View>
             </View>
+            <View style={styles.fixedButton}>
+                <TouchableWithoutFeedback onPress={() => this.setState({ add: true, name:'', category:'', icon_name:'Pick an Image'})}>
+                    <Icon name="add" type="material-icons" color="white"/>
+                </TouchableWithoutFeedback>
+            </View></>
         );
     }
 }
