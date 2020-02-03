@@ -7,7 +7,6 @@ import {Input, Text, Card, Icon, Button} from 'react-native-elements';
 import styles from './ProductsViewStyle';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
-import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 import { NavigationEvents } from 'react-navigation';
 import NavigationService from '../../utils/NavigationService';
 
@@ -70,6 +69,7 @@ export default class ProductsView extends React.Component {
     }
 
     handleBackButton() {
+        true;
     }
 
     getUserID(){
@@ -116,22 +116,12 @@ export default class ProductsView extends React.Component {
             <NavigationEvents onWillFocus={payload => console.log('will focus', payload)} onDidFocus={payload => console.log('did focus', payload)}
                 onWillBlur={payload => console.log('will blur', payload)} onDidBlur={payload => console.log('did blur', payload)}/>
 
-                {/* <Modal onHardwareBackPress={() => this.setState({ info: false })} modalStyle={styles.showInfoModal} modalTitle={<ModalTitle title="Site Informations" />}
-                    visible={this.state.info} onTouchOutside={() => {this.setState({ info: false, isVisible: false });}}>
-                    <ModalContent>
-                    <Text style={styles.infoText}>Name: {this.state.name}</Text>
-                    <Text style={styles.infoText}>Category: {this.state.category}</Text>
-                    </ModalContent>
-                </Modal> */}
-
                 <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
                 <Button title='refresh' onPress={()=> this.getDatas()}></Button>
                     <Text h4 style={{textAlign:'center',paddingBottom:10}}>Products of {this.props.navigation.getParam('category','default-value')}</Text>
                     {
                         datas.map((l, i) => (
-                            <TouchableWithoutFeedback
-                            // onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
-                            onLongPress={() => this.setState({ isVisible: true, id: l.id})}>
+                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}>
                             <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.name}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.name}</Text>
                             </Card>

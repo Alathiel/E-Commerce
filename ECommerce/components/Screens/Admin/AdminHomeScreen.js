@@ -195,7 +195,6 @@ export default class AdminHomeScreen extends React.Component {
                     <ModalContent>
                         <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false }); this.delete(this.state.category);}}/>
                         <ModalButton text='Edit' onPress={() => {this.setState({ edit: true }); this.showEditInfo(this.state.category);}}/>
-                        <ModalButton text='Show Informations' onPress={() => {this.setState({ info: true }); this.showInfo(this.state.index);}}/>
                     </ModalContent>
                 </Modal>
 

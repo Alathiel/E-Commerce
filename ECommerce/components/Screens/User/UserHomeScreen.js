@@ -3,11 +3,10 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
-import {Button, Icon, Input, Text, Card, Image} from 'react-native-elements';
+import {Button, Icon, Text, Card} from 'react-native-elements';
 import styles from './UserHomeScreenStyle';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
-import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 import NavigationService from '../../utils/NavigationService';
 
 var categories = [];
@@ -23,8 +22,8 @@ export default class UserHomeScreen extends React.Component {
         };
         //account/screen change
         this.props.navigation.addListener('willFocus', () => {
-            // categories = categories.filter(categories => categories.adminId == userID);
             this.getCategories();
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
         });
         this.props.navigation.addListener('didFocus', () => {
             this.getCategories();
@@ -102,24 +101,24 @@ export default class UserHomeScreen extends React.Component {
         }));
     }
 
+    handleBackButton() {
+        BackHandler.exitApp();
+    }
+
+    navigation(category){
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+        this.props.navigation.navigate('UserProductsView',{category: category});
+    }
+
     render() {
         return (
             <View style={styles.MainContainer}>
-                <Modal onHardwareBackPress={() => this.setState({ isVisible: false })} modalStyle={styles.modal} visible={this.state.isVisible} onTouchOutside={() => {this.setState({ isVisible: false });}}>
-                    <ModalContent>
-                        <ModalButton text='Delete' onPress={() => {this.setState({ isVisible: false }); this.delete(this.state.category);}}/>
-                        <ModalButton text='Edit' onPress={() => {this.setState({ edit: true }); this.showEditInfo(this.state.category);}}/>
-                        <ModalButton text='Show Informations' onPress={() => {this.setState({ info: true }); this.showInfo(this.state.index);}}/>
-                    </ModalContent>
-                </Modal>
-
                 <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
                 <Button title='Refresh' onPress={()=> this.getCategories()}></Button>
                     <Text h4 style={{textAlign:'center',paddingBottom:10}}>Categories</Text>
                     {
                         categories.map((l, i) => (
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('UserProductsView',{category: l.category})}
-                            onLongPress={() => this.setState({ isVisible: true, category: l.category})}>
+                            <TouchableWithoutFeedback onPress={() => this.navigation(l.category)}>
                             <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.category}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.category}</Text>
                             </Card>

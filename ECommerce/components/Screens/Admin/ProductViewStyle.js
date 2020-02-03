@@ -29,7 +29,7 @@ module.exports= StyleSheet.create({
         justifyContent: "center",
     },
     modal: {
-        maxHeight:'40%',
+        maxHeight:'35%',
         alignContent: "center",
         justifyContent: "center",
     },
