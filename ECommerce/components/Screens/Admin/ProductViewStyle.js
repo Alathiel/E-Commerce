@@ -39,6 +39,7 @@ module.exports= StyleSheet.create({
     },
     infoText:{
         fontSize:20,
+        fontWeight:'bold',
     },
     editModal: {
         maxWidth:'90%',

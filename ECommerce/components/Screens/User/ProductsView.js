@@ -3,12 +3,13 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
-import {Input, Text, Card, Icon, Button} from 'react-native-elements';
+import {Image, Text, Card, Icon, Button} from 'react-native-elements';
 import styles from './ProductsViewStyle';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import { NavigationEvents } from 'react-navigation';
 import NavigationService from '../../utils/NavigationService';
+import Modal, {ModalContent, ModalTitle} from 'react-native-modals';
 
 var datas = [];
 var userID;
@@ -35,6 +36,7 @@ export default class ProductsView extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
+            headerTitle:'Products',
             headerLeft: ()=>(
                     <TouchableWithoutFeedback onPress={() => NavigationService.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
                       <Icon name='home' type='material-icons' color='black'/>
@@ -116,12 +118,21 @@ export default class ProductsView extends React.Component {
             <NavigationEvents onWillFocus={payload => console.log('will focus', payload)} onDidFocus={payload => console.log('did focus', payload)}
                 onWillBlur={payload => console.log('will blur', payload)} onDidBlur={payload => console.log('did blur', payload)}/>
 
+                <Modal onHardwareBackPress={() => this.setState({ info: false })} modalStyle={styles.showInfoModal} modalTitle={<ModalTitle title="Product Informations"/>}
+                    visible={this.state.info} onTouchOutside={() => {this.setState({ info: false});}}>
+                    <ModalContent>
+                    <Image source={{uri:this.state.uri}} style={{minWidth:'100%',minHeight:'50%'}} containerStyle={{borderTopWidth:15,borderBottomWidth:15,borderColor:'rgba(52, 52, 52, 0.0)'}}/>
+                    <View style={{flexDirection:'row'}}><Text style={styles.infoText}>Name:</Text><Text style={{fontSize:20}}> {this.state.name}</Text></View>
+                    <View style={{flexDirection:'row'}}><Text style={styles.infoText}>Category:</Text><Text style={{fontSize:20}}> {this.state.category}</Text></View>
+                    </ModalContent>
+                </Modal>
+
                 <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
                 <Button title='refresh' onPress={()=> this.getDatas()}></Button>
                     <Text h4 style={{textAlign:'center',paddingBottom:10}}>Products of {this.props.navigation.getParam('category','default-value')}</Text>
                     {
                         datas.map((l, i) => (
-                            <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}>
+                            <TouchableWithoutFeedback onPress={() => this.setState({ info: true, uri:l.img, name:l.name, category:l.category})}>
                             <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.name}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.name}</Text>
                             </Card>

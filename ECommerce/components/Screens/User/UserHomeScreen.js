@@ -32,6 +32,7 @@ export default class UserHomeScreen extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
+            headerTitle:'Home',
             headerLeft: ()=>(
                 <TouchableWithoutFeedback onPress={() => NavigationService.navigate('UserHome')} style={{paddingLeft: 20, paddingTop:2}}>
                     <Icon name='home' type='material-icons' color='black'/>

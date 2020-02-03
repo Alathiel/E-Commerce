@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
-import {Input, Text, Card, Icon, Button} from 'react-native-elements';
+import {Input, Text, Card, Icon, Button, Image} from 'react-native-elements';
 import styles from './ProductViewStyle.js';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
@@ -43,6 +43,7 @@ export default class ProductsView extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
+            headerTitle:'Products',
             headerLeft: ()=>(
                     <TouchableWithoutFeedback onPress={() => NavigationService.navigate('AdminHome')} style={{paddingLeft: 20, paddingTop:2}}>
                       <Icon name='home' type='material-icons' color='black'/>
@@ -296,13 +297,14 @@ export default class ProductsView extends React.Component {
                     </ModalContent>
                 </Modal>
 
-                {/* <Modal onHardwareBackPress={() => this.setState({ info: false })} modalStyle={styles.showInfoModal} modalTitle={<ModalTitle title="Site Informations" />}
-                    visible={this.state.info} onTouchOutside={() => {this.setState({ info: false, isVisible: false });}}>
+                <Modal onHardwareBackPress={() => this.setState({ info: false })} modalStyle={styles.showInfoModal} modalTitle={<ModalTitle title="Product Informations"/>}
+                    visible={this.state.info} onTouchOutside={() => {this.setState({ info: false});}}>
                     <ModalContent>
-                    <Text style={styles.infoText}>Name: {this.state.name}</Text>
-                    <Text style={styles.infoText}>Category: {this.state.category}</Text>
+                    <Image source={{uri:this.state.uri}} style={{minWidth:'100%',minHeight:'50%'}} containerStyle={{borderTopWidth:15,borderBottomWidth:15,borderColor:'rgba(52, 52, 52, 0.0)'}}/>
+                    <View style={{flexDirection:'row'}}><Text style={styles.infoText}>Name:</Text><Text style={{fontSize:20}}> {this.state.name}</Text></View>
+                    <View style={{flexDirection:'row'}}><Text style={styles.infoText}>Category:</Text><Text style={{fontSize:20}}> {this.state.category}</Text></View>
                     </ModalContent>
-                </Modal> */}
+                </Modal>
 
                 <ScrollView key={this.state.reload} locked={true} style={{maxHeight:'95%',alignContent:'center'}}>
                 <Button title='refresh' onPress={()=> this.getDatas()}></Button>
@@ -310,7 +312,7 @@ export default class ProductsView extends React.Component {
                     {
                         datas.map((l, i) => (
                             <TouchableWithoutFeedback
-                            // onPress={() => this.props.navigation.navigate('ProductsView',{category: l.category})}
+                            onPress={() => this.setState({ info: true, uri:l.img, name:l.name, category:l.category})}
                             onLongPress={() => this.setState({ isVisible: true, id: l.id})}>
                             <Card key={i} containerStyle={styles.card} image={{ uri: l.img}} featuredTitle={l.name}>
                                 <Text style={{textAlign:'center',fontSize:20}}>{l.name}</Text>
