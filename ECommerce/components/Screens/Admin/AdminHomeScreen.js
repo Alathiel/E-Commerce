@@ -3,7 +3,7 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler} from 'react-native';
-import {Button, Icon, Input, Text, Card, Image} from 'react-native-elements';
+import {Button, Icon, Input, Text, Card} from 'react-native-elements';
 import styles from './AdminHomeScreenStyle.js';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
@@ -29,6 +29,7 @@ export default class AdminHomeScreen extends React.Component {
         };
         //account/screen change
         this.props.navigation.addListener('willFocus', () => {
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
             categories = categories.filter(categories => categories.adminId == userID);
             this.getCategories();
         });
@@ -62,6 +63,10 @@ export default class AdminHomeScreen extends React.Component {
             },
         };
     };
+
+    handleBackButton(){
+        true;
+    }
 
     componentWillMount(){ //first load
         this.getUserID();
