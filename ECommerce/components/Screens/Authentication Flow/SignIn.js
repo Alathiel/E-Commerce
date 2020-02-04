@@ -72,7 +72,7 @@ export default class SignIn extends React.Component {
                         <Input label='Password' placeholder='Hi, Write Here!!' containerStyle={{maxWidth:'90%',paddingBottom:20,paddingTop:20}}
                         secureTextEntry={this.state.secure} onChangeText={(password) => this.setState({password})} value={this.state.password}/>
                         <Icon name={this.state.icon} type='material-community' color='grey' onPress={()=>this.visibility()}
-                        containerStyle={{paddingTop:40,paddingRight:50}}/>
+                        containerStyle={{paddingTop:60,paddingRight:50}}/>
                     </View>
                 </View>
                 <Button title='Sign In' type='solid' style={{paddingTop:15}} onPress={() => this.signIn()}/>
