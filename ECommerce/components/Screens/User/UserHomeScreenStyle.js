@@ -7,20 +7,10 @@ var {StyleSheet} = React;
 
 module.exports= StyleSheet.create({
   MainContainer: {
-      paddingTop:10,
-      minHeight:'95%',
-      maxHeight:'95%',
-      minWidth:'95%',
+      minHeight:'97%',
+      maxHeight:'97%',
+      minWidth:'97%',
       alignContent:'center',
-    },
-    modal: {
-      maxHeight:'40%',
-      alignContent: "center",
-      justifyContent: "center",
-    },
-    editModal: {
-      maxWidth:'90%',
-      minWidth:'90%',
     },
     editInput: {
       paddingBottom:10,

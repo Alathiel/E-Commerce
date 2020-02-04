@@ -45,14 +45,10 @@ export default class AdminHomeScreen extends React.Component {
         return {
             headerTitle:'Home',
             headerLeft: ()=>(
-                <TouchableWithoutFeedback onPress={() => NavigationService.navigate('AdminHome')} style={{paddingLeft: 20, paddingTop:2}}>
-                    <Icon name='home' type='material-icons' color='black'/>
-                </TouchableWithoutFeedback>
+                    <Icon name='home' type='material-icons' color='black' onPress={() => NavigationService.navigate('AdminHome')} containerStyle={{paddingLeft: 10, paddingTop:2}}/>
             ),
             headerRight: ()=>(
-                <TouchableWithoutFeedback onPress={() => NavigationService.navigate('Settings')} style={{paddingLeft: 20, paddingTop:2}}>
-                    <Icon name='settings' type='material-icons' color='black'/>
-                </TouchableWithoutFeedback>
+                    <Icon name='settings' type='material-icons' color='black' onPress={() => NavigationService.navigate('Settings')} containerStyle={{paddingRight: 10, paddingTop:2}}/>
             ),
             headerStyle: {
                 backgroundColor: 'rgba(52, 52, 52, 0.0)',
@@ -309,7 +305,7 @@ export default class AdminHomeScreen extends React.Component {
 
                 <View style={{flexDirection:'row-reverse'}} backgroundColor='rgba(52, 52, 52, 0.0)'>
                     <TouchableWithoutFeedback onPress={()=>{this.changeState()}}>
-                        <Icon name={this.state.icon} type='material-community' color='black'/>
+                        <Icon name={this.state.icon} type='material-community' color='black' containerStyle={{paddingRight:10}}/>
                     </TouchableWithoutFeedback>
                 </View>
                 {this.renderItems()}
