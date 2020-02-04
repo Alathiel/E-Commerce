@@ -37,7 +37,7 @@ export default class AdminHomeScreen extends React.Component {
             this.getCategories();
         });
         this.props.navigation.addListener('didFocus', () => {
-            // const timeoutId = BackgroundTimer.setTimeout(() => {this.getCategories();}, 200);
+            this.getCategories();
         });
     }
 
