@@ -17,6 +17,8 @@ export default class Login extends React.Component {
         this.state = {
             username: '',
             password: '',
+            secure:true,
+            icon:'eye',
         };
     }
 
@@ -52,14 +54,27 @@ export default class Login extends React.Component {
         }
     }
 
+    visibility(){
+        if (this.state.secure){
+            this.setState({secure:false,icon:'eye-off'});
+        }
+        else {
+            this.setState({secure:true,icon:'eye'});
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
                  <View style={styles.inputs_container}>
-                    <Input label='Username' placeholder='Hi, Write Here!!' style={{paddingBottom:20}}
+                    <Input label='Username' placeholder='Hi, Write Here!!' containerStyle={{maxWidth:'90%'}}
                     onChangeText={(username) => this.setState({username})} value={this.state.username}/>
-                    <Input label='Password' placeholder='Hi, Write Here!!' style={{paddingBottom:20,paddingTop:20}} secureTextEntry={true}
-                    onChangeText={(password) => this.setState({password})} value={this.state.password}/>
+                    <View style={{flexDirection:'row'}}>
+                        <Input label='Password' placeholder='Hi, Write Here!!' containerStyle={{maxWidth:'90%',paddingBottom:20,paddingTop:20}}
+                        secureTextEntry={this.state.secure} onChangeText={(password) => this.setState({password})} value={this.state.password}/>
+                        <Icon name={this.state.icon} type='material-community' color='grey' onPress={()=>this.visibility()}
+                        containerStyle={{paddingTop:40,paddingRight:50}}/>
+                    </View>
                 </View>
                 <Button title='Login' type='solid' style={{paddingTop:15}} onPress={() => this.login()}/>
             </View>

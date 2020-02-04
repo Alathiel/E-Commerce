@@ -2,7 +2,7 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View} from 'react-native';
+import {View,TouchableWithoutFeedback} from 'react-native';
 import {ListItem, Icon, Input, Text, Button} from 'react-native-elements';
 import styles from './LoginStyle.js';
 import SQLite from 'react-native-sqlite-2';
@@ -18,6 +18,8 @@ export default class SignIn extends React.Component {
         this.state = {
             username: '',
             password: '',
+            secure:true,
+            icon:'eye',
         };
     }
 
@@ -51,14 +53,27 @@ export default class SignIn extends React.Component {
         this.setState({username:'', password:''});
     }
 
+    visibility(){
+        if (this.state.secure){
+            this.setState({secure:false,icon:'eye-off'});
+        }
+        else {
+            this.setState({secure:true,icon:'eye'});
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
                  <View style={styles.inputs_container}>
-                 <Input label='Username' placeholder='Hi, Write Here!!' style={{paddingBottom:20}}
-                onChangeText={(username) => this.setState({username})} value={this.state.username}/>
-                <Input label='Password' placeholder='Hi, Write Here!!' style={{paddingBottom:20,paddingTop:20}} secureTextEntry={true}
-                onChangeText={(password) => this.setState({password})} value={this.state.password}/>
+                    <Input label='Username' placeholder='Hi, Write Here!!' containerStyle={{maxWidth:'90%'}}
+                    onChangeText={(username) => this.setState({username})} value={this.state.username}/>
+                    <View style={{flexDirection:'row'}}>
+                        <Input label='Password' placeholder='Hi, Write Here!!' containerStyle={{maxWidth:'90%',paddingBottom:20,paddingTop:20}}
+                        secureTextEntry={this.state.secure} onChangeText={(password) => this.setState({password})} value={this.state.password}/>
+                        <Icon name={this.state.icon} type='material-community' color='grey' onPress={()=>this.visibility()}
+                        containerStyle={{paddingTop:40,paddingRight:50}}/>
+                    </View>
                 </View>
                 <Button title='Sign In' type='solid' style={{paddingTop:15}} onPress={() => this.signIn()}/>
             </View>
