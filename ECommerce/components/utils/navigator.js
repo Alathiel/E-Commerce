@@ -16,6 +16,7 @@ import LoadingScreen from '../Screens/LoadingScreen.js';
 import SettingsScreen from '../Screens/SettingsScreen';
 import UserHomeScreen from '../Screens/User/UserHomeScreen';
 import UserProductsView from '../Screens/User/ProductsView';
+import Cart from '../Screens/User/Cart';
 
 const AppStack = createStackNavigator(
   {
@@ -24,6 +25,7 @@ const AppStack = createStackNavigator(
     Settings: SettingsScreen,
     UserHome: UserHomeScreen,
     UserProductsView: UserProductsView,
+    Cart: Cart,
   },
 );
 

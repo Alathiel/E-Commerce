@@ -26,6 +26,31 @@ module.exports= StyleSheet.create({
     },
     infoText:{
         fontSize:20,
-        fontWeight:'bold'
+        fontWeight:'bold',
+    },
+    editInput: {
+        paddingBottom:10,
+    },
+    card: {
+        alignSelf:'center',
+        minWidth:'90%',
+        maxWidth:'90%',
+    },
+    imagePickerModal: {
+        maxWidth:'90%',
+        minWidth:'90%',
+        minHeight:'20%',
+    },
+    imagePickerButtons: {
+        maxHeight:'30%',
+        minHeight:'30%',
+        paddingTop:40,
+    },
+    tableTitle:{
+        fontSize:20,
+        fontWeight:'bold',
+    },
+    tableText:{
+        fontSize:20,
     },
   });

@@ -4,7 +4,7 @@
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler,FlatList} from 'react-native';
 import {Button, Icon, Text, Card, ListItem} from 'react-native-elements';
-import styles from './UserHomeScreenStyle';
+import styles from './UserStyles';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import NavigationService from '../../utils/NavigationService';
@@ -40,7 +40,7 @@ export default class UserHomeScreen extends React.Component {
             ),
             headerRight: ()=>(
                 <View style={{paddingRight: 10, paddingTop:2,flexDirection:'row'}}>
-                <Icon name='cart' type='material-community' color='black' containerStyle={{paddingRight:10}}/>
+                <Icon name='cart' type='material-community' color='black' onPress={() => NavigationService.navigate('Cart',{userID: userID})} containerStyle={{paddingRight:10}}/>
                 <Icon name='settings' type='material-icons' color='black' onPress={() => NavigationService.navigate('Settings')}/>
                 </View>
             ),

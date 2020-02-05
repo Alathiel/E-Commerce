@@ -2,11 +2,9 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {View,TouchableWithoutFeedback,ScrollView,BackHandler, ImageBackground} from 'react-native';
-import {Button, Icon, Input, Text, Card, Image} from 'react-native-elements';
+import {View,BackHandler} from 'react-native';
+import {Button,Text} from 'react-native-elements';
 import SQLite from 'react-native-sqlite-2';
-import BackgroundTimer from 'react-native-background-timer';
-import Modal, {ModalContent, ModalTitle, ModalButton, ModalFooter } from 'react-native-modals';
 import NavigationService from '../utils/NavigationService';
 
 var userID;
@@ -55,7 +53,12 @@ export default class SettingsScreen extends React.Component {
 
     componentDidMount(){
         this.getUserID();
-        // this.showPermissions();
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+    }
+
+    handleBackButton = () => {
+        this.props.navigation.goBack(null);
+        return true;
     }
 
     getUserID(){

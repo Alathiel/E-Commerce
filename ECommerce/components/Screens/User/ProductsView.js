@@ -4,7 +4,7 @@
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler,FlatList} from 'react-native';
 import {Image, Text, Card, Icon, Button, ListItem, Input} from 'react-native-elements';
-import styles from './ProductsViewStyle';
+import styles from './UserStyles';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import { NavigationEvents } from 'react-navigation';
@@ -46,7 +46,7 @@ export default class ProductsView extends React.Component {
                 <Icon name='home' type='material-icons' color='black' onPress={() => NavigationService.navigate('UserHome')} containerStyle={{paddingLeft: 10, paddingTop:2}}/>
             ),
             headerRight: ()=>(
-                <Icon name='cart' type='material-community' color='black' containerStyle={{paddingRight:10}}/>
+                <Icon name='cart' type='material-community' color='black' onPress={() => NavigationService.navigate('Cart',{userID: userID})} containerStyle={{paddingRight:10}}/>
             ),
             headerStyle: {
                 backgroundColor: 'rgba(52, 52, 52, 0.0)',
@@ -127,7 +127,7 @@ export default class ProductsView extends React.Component {
                     <FlatList data={datas} numColumns={2} keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item }) => (
                         <View style={{ flex: 1, flexDirection: 'column', margin: 1 }}>
-                            <TouchableWithoutFeedback onPress={() => this.setState({ info: true, uri:item.img, name:item.name, category:item.category})}>
+                            <TouchableWithoutFeedback onPress={() => this.setState({ info: true, uri:item.img, name:item.name, category:item.category, id:item.id})}>
                                 <Card containerStyle={styles.card} image={{ uri: item.img}}>
                                     <Text style={{textAlign:'center',fontSize:20}}>{item.name}</Text>
                                 </Card>
@@ -165,7 +165,7 @@ export default class ProductsView extends React.Component {
         this.setState({view:true,icon:'view-list'});
     }
 
-    add = () =>{
+    add(){
         if (isNaN(this.state.qnt) || this.state.qnt == 0){
             alert('Error. Insert a number.')
         }
