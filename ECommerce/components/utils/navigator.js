@@ -1,9 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import 'react-native-gesture-handler';
-import {Icon} from 'react-native-elements';
 //navigator
 import { createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';

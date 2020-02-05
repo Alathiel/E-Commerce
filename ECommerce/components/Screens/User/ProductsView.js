@@ -3,13 +3,15 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import {View,TouchableWithoutFeedback,ScrollView,BackHandler,FlatList} from 'react-native';
-import {Image, Text, Card, Icon, Button, ListItem} from 'react-native-elements';
+import {Image, Text, Card, Icon, Button, ListItem, Input} from 'react-native-elements';
 import styles from './ProductsViewStyle';
 import SQLite from 'react-native-sqlite-2';
 import BackgroundTimer from 'react-native-background-timer';
 import { NavigationEvents } from 'react-navigation';
 import NavigationService from '../../utils/NavigationService';
 import Modal, {ModalContent, ModalTitle} from 'react-native-modals';
+import ModalFooter from 'react-native-modals/dist/components/ModalFooter';
+import ModalButton from 'react-native-modals/dist/components/ModalButton';
 
 var datas = [];
 var userID;
@@ -28,6 +30,7 @@ export default class ProductsView extends React.Component {
             view:true,
             source: '',
             icon:'view-list',
+            qnt:0,
         };
         this.props.navigation.addListener('willFocus', () => {//category change
             datas.splice(0);
@@ -41,6 +44,9 @@ export default class ProductsView extends React.Component {
             headerTitle:'Products',
             headerLeft: ()=>(
                 <Icon name='home' type='material-icons' color='black' onPress={() => NavigationService.navigate('UserHome')} containerStyle={{paddingLeft: 10, paddingTop:2}}/>
+            ),
+            headerRight: ()=>(
+                <Icon name='cart' type='material-community' color='black' containerStyle={{paddingRight:10}}/>
             ),
             headerStyle: {
                 backgroundColor: 'rgba(52, 52, 52, 0.0)',
@@ -159,6 +165,21 @@ export default class ProductsView extends React.Component {
         this.setState({view:true,icon:'view-list'});
     }
 
+    add = () =>{
+        if (isNaN(this.state.qnt) || this.state.qnt == 0){
+            alert('Error. Insert a number.')
+        }
+        else {
+            var qnt = this.state.qnt;
+            var productID = this.state.id;
+            db.transaction(function (txn) {
+                txn.executeSql('INSERT INTO Cart (user,productID,qnt) VALUES (' + userID + ',' + productID + ',' + qnt + ')',[]);
+            });
+            alert('Product added to your cart');
+            this.setState({info:false,qnt:0});
+        }
+    }
+
     render() {
         return (
             <View style={styles.MainContainer}>
@@ -171,7 +192,13 @@ export default class ProductsView extends React.Component {
                     <Image source={{uri:this.state.uri}} style={{minWidth:'100%',minHeight:'50%'}} containerStyle={{borderTopWidth:15,borderBottomWidth:15,borderColor:'rgba(52, 52, 52, 0.0)'}}/>
                     <View style={{flexDirection:'row'}}><Text style={styles.infoText}>Name:</Text><Text style={{fontSize:20}}> {this.state.name}</Text></View>
                     <View style={{flexDirection:'row'}}><Text style={styles.infoText}>Category:</Text><Text style={{fontSize:20}}> {this.state.category}</Text></View>
+                    <Input placeholder='0' label='Quantity' keyboardType={'numeric'} onChangeText={(qnt) => this.setState({qnt})} value={this.state.qnt}
+                    containerStyle={{paddingBottom:20,paddingTop:20,alignSelf:'flex-end'}}/>
                     </ModalContent>
+                    <ModalFooter>
+                        <ModalButton text="Cancel" onPress={() => {this.setState({info: false,qnt:0});}}/>
+                        <ModalButton text="Add to Cart" onPress={() => {this.add();}}/>
+                    </ModalFooter>
                 </Modal>
 
                 <View style={{flexDirection:'row-reverse'}} backgroundColor='rgba(52, 52, 52, 0.0)'>

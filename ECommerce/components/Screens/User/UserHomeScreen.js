@@ -39,7 +39,10 @@ export default class UserHomeScreen extends React.Component {
                 <Icon name='home' type='material-icons' color='black' onPress={() => NavigationService.navigate('UserHome')} containerStyle={{paddingLeft: 10, paddingTop:2}}/>
             ),
             headerRight: ()=>(
-                <Icon name='settings' type='material-icons' color='black' onPress={() => NavigationService.navigate('Settings')} containerStyle={{paddingRight: 10, paddingTop:2}}/>
+                <View style={{paddingRight: 10, paddingTop:2,flexDirection:'row'}}>
+                <Icon name='cart' type='material-community' color='black' containerStyle={{paddingRight:10}}/>
+                <Icon name='settings' type='material-icons' color='black' onPress={() => NavigationService.navigate('Settings')}/>
+                </View>
             ),
             headerStyle: {
                 backgroundColor: 'rgba(52, 52, 52, 0.0)',
