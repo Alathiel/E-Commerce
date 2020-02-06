@@ -10,7 +10,6 @@ import BackgroundTimer from 'react-native-background-timer';
 import { NavigationEvents } from 'react-navigation';
 import NavigationService from '../../utils/NavigationService';
 import Modal, {ModalContent, ModalTitle} from 'react-native-modals';
-import { Table, Row,Rows, Cell } from 'react-native-table-component';
 import ModalFooter from 'react-native-modals/dist/components/ModalFooter';
 import ModalButton from 'react-native-modals/dist/components/ModalButton';
 import ProductsView from '../Admin/ProductsView';
@@ -31,9 +30,32 @@ export default class Cart extends React.Component {
         });
         this.props.navigation.addListener('didFocus', () => {
             this.getProducts();
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
         });
     }
 
+    static navigationOptions = ({ navigation }) => {
+        return {
+            headerStyle: {
+                backgroundColor: 'rgba(52, 52, 52, 0.0)',
+                shadowColor: 'transparent',
+                borderBottomWidth: 0,
+                shadowOpacity: 0,
+                shadowOffset: {
+                    height: 0,
+                    width: 0,
+                },
+                shadowRadius: 0,
+                elevation: 0,
+            },
+        };
+    };
+
+
+    handleBackButton = () => {
+        this.props.navigation.goBack(null);
+        return true;
+    }
 
     getProducts()
     {
@@ -59,11 +81,11 @@ export default class Cart extends React.Component {
 
     render() {
         return (
-            <View style={styles.MainContainer} key={this.state.reload}>
+            <View style={styles.MainContainer,{alignContent:'center',justifyContent: "center",alignSelf:'center'}} key={this.state.reload}>
             <NavigationEvents onWillFocus={payload => console.log('will focus', payload)} onDidFocus={payload => console.log('did focus', payload)}
             onWillBlur={payload => console.log('will blur', payload)} onDidBlur={payload => console.log('did blur', payload)}/>
 
-            <ScrollView locked={true} style={{maxHeight:'95%',minWidth:'95%',alignContent:'center'}}>
+            <ScrollView locked={true} style={{maxHeight:'90%',minHeight:'90%',minWidth:'95%',maxWidth:'95%',alignContent:'center',alignSelf:'center'}}>
                 <View style={{flexDirection:'row',flex:1,minWidth:'95%',borderWidth:0.5,borderColor:'grey'}}>
                     <View style={{flex:0.25,borderRightWidth:0.5,borderColor:'grey'}}><Text style={styles.tableTitle}>N°</Text></View>
                     <View style={{flex:0.25,borderColor:'grey',borderRightWidth:0.5}}><Text style={styles.tableTitle}>Name</Text></View>
@@ -72,16 +94,16 @@ export default class Cart extends React.Component {
                 </View>
                 {
                     products.map((items,i) => (
-                    <View style={{flexDirection:'row',flex:1,minWidth:'95%',borderColor:'grey',borderBottomWidth:0.5,borderLeftWidth:0.5,borderRightWidth:0.5}}>
-                        <View style={{flex:0.25,borderRightWidth:0.5,borderColor:'grey'}}><Text style={styles.tableTitle}>{i}</Text></View>
-                        <View style={{flex:0.25,borderColor:'grey',borderRightWidth:0.5}}><Text style={styles.tableTitle}>{items.name}</Text></View>
-                        <View style={{flex:0.25,borderColor:'grey',borderRightWidth:0.5}}><Text style={styles.tableTitle}>{items.category}</Text></View>
-                        <View style={{flex:0.25}}><Text style={styles.tableTitle}>{items.qnt}</Text></View>
-                    </View>
+                        <View style={{flexDirection:'row',flex:1,minWidth:'95%',borderColor:'grey',borderBottomWidth:0.5,borderLeftWidth:0.5,borderRightWidth:0.5}}>
+                            <View style={{flex:0.25,borderRightWidth:0.5,borderColor:'grey'}}><Text style={styles.tableTitle}>{i + 1}</Text></View>
+                            <View style={{flex:0.25,borderColor:'grey',borderRightWidth:0.5}}><Text style={styles.tableTitle}>{items.name}</Text></View>
+                            <View style={{flex:0.25,borderColor:'grey',borderRightWidth:0.5}}><Text style={styles.tableTitle}>{items.category}</Text></View>
+                            <View style={{flex:0.25}}><Text style={styles.tableTitle}>{items.qnt}</Text></View>
+                        </View>
                     ))
                 }
             </ScrollView>
-
+                <Button title='Buy' containerStyle={{paddingBottom:10,minWidth:'50%',maxWidth:'50%',alignSelf:'center'}}/>
             </View>
         );
     }
